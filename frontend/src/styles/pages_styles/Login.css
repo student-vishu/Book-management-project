@@ -1,0 +1,261 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Background animation */
+.login-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(45deg, #1e1e2f, #343a40);
+    animation: fadeInBackground 1.5s ease-in-out;
+}
+
+@keyframes fadeInBackground {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.login-form .change-password-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    background: #3ee718;
+}
+
+.login-form .change-password-info h2 {
+    text-transform: capitalize;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+/* Form animation */
+.login-form .form {
+    width: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0px 35px 35px 35px;
+    border-radius: 10px;
+    border: 2px solid #fff;
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    animation: fadeInForm 1s ease-in-out;
+    position: relative;
+}
+
+@keyframes fadeInForm {
+    from {
+        transform: translateY(-40px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.login-form .form .ragistrtion-error {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    margin: auto;
+    width: 100%;
+    font-size: 12px;
+    padding: 0px;
+    background: #dc3545;
+    border-radius: 9px 8px 3px 4px;
+    display: none;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.login-form .form .showError {
+    animation: top 1s ease-in-out;
+    display: block;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+@keyframes top {
+    from {
+        transform: translatey(-5px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translatey("0px");
+        opacity: 1;
+    }
+}
+
+.login-form .form .ragistrtion-error h1 {
+    text-align: center;
+    padding: 2px;
+    text-transform: capitalize;
+    font-family: "Arvo", serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.login-form .form .login-heding h1 {
+    color: #fff;
+    text-align: center;
+    padding: 35px 0px 10px 0px;
+    font-family: "Arvo", serif;
+    font-weight: 400;
+    font-style: italic;
+
+}
+
+/* Input fields animation */
+.login-form .form .input-filed label {
+    color: #fff;
+    font-size: 18px;
+    font-family: "PT Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.login-form .form .input-filed .froget-password {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: baseline;
+}
+
+.login-form .form .input-filed .froget-password h3 {
+    color: #fff;
+    margin: 0px;
+    padding: 0px;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    letter-spacing: 1px;
+    font-family: "Domine", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.login-form .form .input-filed .froget-password h3:hover {
+    font-size: 13px;
+    color: #ff4d4d;
+    font-weight: 900;
+}
+
+.login-form .form .input-filed input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #fff;
+    margin: 10px 0px 24px 0px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    font-family: "Jost", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+}
+
+
+.login-form .form .input-filed input:focus {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+    outline: none;
+}
+
+.login-form .form .input-filed .input-password {
+    position: relative;
+}
+
+.login-form .form .input-filed .toggle-password-visibility i {
+    font-size: 18px;
+}
+
+.login-form .form .input-filed .toggle-password-visibility {
+    background: transparent;
+    position: absolute;
+    top: 10.5px;
+    right: 0px;
+    padding: 13px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Error message styling */
+.login-form .form .input-filed span {
+    display: block;
+    color: #ff4d4d;
+    font-weight: bold;
+    margin: -22px 0px 0px 0px;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Buttons animation */
+.login-form .form .button button {
+    font-size: 16px;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    width: 50%;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+.login-form .form .button .login_type {
+    width: 100%;
+}
+
+.login-form .form .button .login_button {
+    display: flex;
+}
+
+.login-form .form .button .login_button button {
+    flex: 50%;
+}
+
+.login-form .form .button button:hover {
+    transform: scale(1.1);
+    background-color: #fff;
+    color: #000;
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+}
+
+/* Form submit animation */
+.login-form .form.submitting {
+    animation: formSubmit 0.5s ease-in-out;
+}
+
+@keyframes formSubmit {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(0.98);
+    }
+}

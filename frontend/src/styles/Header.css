@@ -1,0 +1,376 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.header {
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+    background: #000;
+}
+
+.header .navebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 2vw;
+    background: hsla(0, 0%, 100%, .05);
+}
+
+.header .navebar .logo ul {
+    display: flex;
+    list-style-type: none;
+}
+
+.header .navebar .logo {
+    height: 51px;
+    width: 151px;
+    filter: invert(1);
+
+}
+
+.header .navebar .nav-link ul {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    list-style-type: none;
+}
+
+.header .navebar .nav-link ul li {
+    text-align: center;
+}
+
+
+.header .navebar .nav-link ul li a {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 400;
+    text-transform: capitalize;
+}
+
+.header .navebar .nav-link ul li a:hover {
+    border-bottom: 2px solid #fff;
+    padding-bottom: 4px;
+}
+
+.header .navebar .nav-link ul li .active {
+    border-bottom: 2px solid #fff;
+    padding-bottom: 4px;
+}
+
+.header .navebar a {
+    text-decoration: none;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.logout-btn:hover {
+    color: red;
+}
+
+.header .profile-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: #3f51b5;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.header .profile-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 400px;
+    background-color: #fff;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    animation: slideIn 0.3s ease-in-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.header .profile-modal .profile-content .user-info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+.header .profile-modal .profile-content .user-update-facility {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 20px;
+}
+
+.header .profile-modal .profile-content .user-update-facility .heding,
+.header .profile-modal .profile-content .user-activity .heding {
+    text-transform: uppercase;
+    color: #555353;
+    padding: 2.5vh 0px 0px 0px;
+    font-family: "Jost", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+}
+
+.header .profile-modal .profile-content .user-update-facility .user-detail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 10px 0;
+    padding: 8px 16px;
+    background-color: #f1f1f1;
+    border-radius: 8px;
+}
+
+.header .profile-modal .profile-content .user-detail h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #555;
+    text-transform: capitalize;
+    flex: 1;
+    font-family: "Jost", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+}
+
+.header .profile-content .user-update-facility .user-detail .input-error {
+    color: red;
+    margin-top: 4px;
+    padding: 0;
+    font-size: 14px;
+    font-family: "Jost", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+}
+
+.header .profile-content .user-update-facility .user-detail input {
+    padding: 5px 10px;
+}
+
+.header .profile-content .user-update-facility .user-detail p,
+.header .profile-content .user-update-facility .user-detail input {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+    flex: 2;
+    font-family: "PT Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.header .profile-modal .profile-content {
+    text-align: center;
+}
+
+.header .profile-modal .profile-content .user-profile-update {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: right;
+    gap: 10px;
+    padding: 0px 20px 0px 0px;
+}
+
+.header .profile-modal .profile-circle {
+    width: 80px;
+    height: 80px;
+    background-color: #844205;
+    border-radius: 50%;
+    color: white;
+    font-size: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px 10px;
+}
+
+.header .profile-modal .profile-content h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+    flex: 50%;
+    font-family: "Jost", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+}
+
+.header .profile-modal .profile-content .close-profile-icone {
+    position: absolute;
+    right: 11px;
+    top: 11px;
+    padding: 7px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.header .profile-modal .profile-content .close-profile-icone i {
+    font-size: 2rem;
+    color: rgba(0, 0, 0, 0.2);
+}
+
+.header .profile-modal .profile-content .close-profile-icone:hover.close-profile-icone i {
+    color: #000;
+}
+
+.header .profile-modal .profile-content p {
+    margin: 5px 0;
+    color: #555;
+    padding: 0px 20px;
+    flex: 50%;
+    text-align: start;
+    font-family: "PT Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.header .profile-modal .submit-profile {
+    background-color: #31fb38;
+    color: #000;
+}
+
+.header .profile-modal .user-profile-update .close-profile {
+
+    background-color: #f44336;
+    color: #fff;
+}
+
+
+.header .profile-modal .user-profile-update .update-profile {
+    background-color: #ebf436;
+    color: #080808;
+}
+
+.header .profile-modal .user-profile-update .update-profile:hover {
+
+    background-color: #ebf709;
+    color: #111010;
+}
+
+.header .profile-modal .user-profile-update .close-profile,
+.header .profile-modal .user-profile-update .update-profile,
+.header .profile-modal .user-profile-update .submit-profile {
+    text-transform: capitalize;
+    margin-top: 20px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: "Arvo", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.header .confirm-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.header .confirm-box {
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.header .confirm-box p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.header .confirm-buttons button {
+    margin: 0 10px;
+    padding: 8px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.header .confirm-yes {
+    background-color: #4caf50;
+    color: white;
+}
+
+.header .confirm-no {
+    background-color: #f44336;
+    color: white;
+}
+
+.header .profile-modal .profile-content .user-activity .user-acticity-button {
+    width: -webkit-fill-available;
+    margin: 10px 20px;
+    padding: 10px;
+    text-transform: capitalize;
+    font-size: 1rem;
+    background: #e1d7d7;
+    cursor: pointer;
+    font-family: "Arvo", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.header .message {
+    z-index: 30;
+    background-color: #31fb38;
+    font-size: 16px;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 13px;
+    text-transform: capitalize;
+    animation: slideDown 0.5s ease-out;
+    font-family: "Jost", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

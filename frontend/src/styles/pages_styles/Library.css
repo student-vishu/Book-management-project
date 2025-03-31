@@ -1,0 +1,265 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.book-Library-Container {
+    width: 100%;
+    background-color: #000;
+    margin: auto;
+}
+
+.book-Library-Container .book-Container {
+    gap: 40px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 40px 0px;
+    margin: 0px auto;
+}
+
+
+.book-Library-Container .book-Container .book-card {
+    width: 250px;
+    height: 350px;
+    background-color: #1f1f1f;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0px 0px 19px 0px rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    perspective: 2000px;
+}
+
+.book-Library-Container .book-Container .book-card:hover {
+    scale: 1;
+    box-shadow: 9px -6px 0px 3px rgba(255, 255, 255, 0.6), 25px -14px 41px rgba(37, 35, 35, 0.8);
+    transform: translateY(-5px) scale(1.02);
+}
+
+.book-Library-Container .book-Container .book-card img {
+    width: 100%;
+    height: 60%;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px 20px 0px 0px;
+}
+
+.book-Library-Container .book-Container .book-card .book-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 16px;
+}
+
+.book-Library-Container .book-Container .book-card .book-info .book-reting {
+    display: flex;
+    align-items: baseline;
+}
+
+.book-Library-Container .book-Container .book-card .book-info .book-reting .rating-box {
+    display: flex;
+    align-items: center;
+    flex: 20%;
+}
+
+.book-Library-Container .book-Container .book-card .book-info .book-reting .star-wrapper {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    margin-right: 6px;
+    font-size: 24px;
+}
+
+.book-Library-Container .book-Container .book-card .book-info .book-reting .star-background,
+.book-Library-Container .book-Container .book-card .book-info .book-reting .star-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.book-Library-Container .book-Container .book-card .book-info .book-reting .star-background {
+    color: #ddd;
+    /* Light gray star */
+    z-index: 1;
+}
+
+.book-Library-Container .book-Container .book-card .book-info .book-reting .star-fill {
+    color: gold;
+    /* Filled star */
+    z-index: 2;
+}
+
+.book-Library-Container .book-Container .book-card .book-info .book-reting .rating-number {
+    font-size: 16px;
+    color: #4a4949;
+    padding-top: 10px;
+}
+
+
+.book-Library-Container .book-Container .book-card .book-reting .book-title {
+    word-wrap: break-word;
+    flex: 80%;
+    width: 100%;
+    text-align: start;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 6px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 51px;
+    font-family: "Arvo", serif;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.book-Library-Container .book-Container .book-card .book-info .author-name {
+    text-align: justify;
+    text-transform: capitalize;
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: "PT Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.book-Library-Container .book-Container .book-card .book-info .book-amount {
+    font-size: 16px;
+    font-weight: bold;
+    color: #4fbcff;
+    font-family: "Domine", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    text-align: justify;
+}
+
+.book-Library-Container h2,
+.book-Library-Container p {
+    color: #fff;
+    text-align: center;
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 24px;
+}
+
+.book-Library-Container .filter-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.book-Library-Container .search-bar {
+    position: relative;
+    padding: 20px 0px 0px 0px;
+    margin: auto;
+    width: fit-content;
+}
+
+.book-Library-Container .search-bar input {
+    padding: 8px;
+    margin: 10px 0px;
+    width: 350px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.book-Library-Container .search-bar button i {
+    font-size: 15px;
+}
+
+.book-Library-Container .search-bar button {
+    margin-left: 10px;
+
+}
+
+.book-Library-Container .search-bar button,
+.book-Library-Container .filter-group button {
+    padding: 8px 12px;
+    cursor: pointer;
+    background-image: radial-gradient(#9a8d8d, #7f7979, #121111);
+    border-radius: 20px;
+}
+
+.book-Library-Container .search-bar button:hover,
+.book-Library-Container .filter-group button:hover {
+    background-image: radial-gradient(#ffffff, #3f3e3e, #000000);
+
+}
+
+.book-Library-Container .suggestion-list {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    width: 250px;
+    list-style: none;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.book-Library-Container .suggestion-list li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.book-Library-Container .suggestion-list li:hover {
+    background: #eee;
+}
+
+/* General styling for select boxes */
+.book-Library-Container select {
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    appearance: none;
+    /* Remove default arrow (for most browsers) */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%204%205'%3E%3Cpath%20fill='%23666'%20d='M2%200L0%202h4L2%200zM2%205l2-2H0l2%202z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+}
+
+/* On focus */
+.book-Library-Container select:focus {
+    border-color: #4A90E2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+/* Container class if needed for spacing */
+.book-Library-Container .select-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.book-Library-Container .authoe-filter {
+    width: 200px;
+}
+
+.book-Library-Container .price-filter {
+    width: 150px;
+}

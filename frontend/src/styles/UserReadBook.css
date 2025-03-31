@@ -1,0 +1,224 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.user-Book-read {
+    width: 100%;
+    height: 100vh;
+    background-color: #3b3838;
+}
+
+.book-contener {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-contener .book {
+    position: relative;
+    width: 400px;
+    height: 500px;
+    perspective: 1500px;
+    transform-style: preserve-3d;
+    margin: 0px 30px;
+}
+
+.book-contener .book .page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 2s ease;
+    transform-origin: left;
+    top: 0;
+    left: 0;
+    transition: transform 2s ease, z-index 0.3s ease-in-out;
+}
+
+.book-contener .book .page.flipped {
+    transform: rotateY(-180deg);
+    z-index: 0;
+
+}
+
+.book-contener .book .page .front,
+.book-contener .book .page .back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    background: white;
+}
+
+.book-contener .book .page .front {
+    z-index: 2;
+    border-radius: 0 20px 20px 0;
+}
+
+.book-contener .book .page .back {
+    border-radius: 20px 0 0 20px;
+    transform: rotateY(180deg);
+    z-index: 1;
+}
+
+
+
+.book-contener .book .page .front .front-content,
+.book-contener .book .page .back .back-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: justify;
+}
+
+.book-contener .book .page .cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.book-contener .book .page .meta-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.book-contener .book .page .summary-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-contener .book .page .meta-content,
+.book-contener .book .page .summary-content {
+    height: 100%;
+    padding: 1rem 2rem;
+    background: linear-gradient(to bottom right, #fdfcfb, #e2d1c3);
+    color: #333;
+    text-align: center;
+    font-family: 'Georgia', serif;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.book-contener .book .page .meta-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: #302e35;
+    text-shadow: 1px 1px 0 #fff;
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.book-contener .book .page .summary-content .summary-content h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.book-contener .btn {
+    border-radius: 50%;
+    padding: 12px;
+    cursor: pointer;
+    background: linear-gradient(#3b3838, #575656);
+    border: 2px solid #000;
+}
+
+.book-contener .btn i {
+    background-color: transparent;
+    color: #fff;
+    font-size: 20px;
+}
+
+.book-contener .btn:hover {
+    background: #6d6969;
+}
+
+.book-contener .book .page .front .front-content p,
+.book-contener .book .page .back .back-content p {
+    padding: 10px;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    word-spacing: 1px;
+    line-height: 22px;
+}
+
+
+.book-contener .book .page .book-description {
+    margin: 10px;
+}
+
+
+.book_move {
+    transform: translateX(190px);
+
+}
+
+.prev_button_move {
+    transform: translateX(-210px);
+}
+
+.next_button_move {
+    transform: translateX(190px);
+}
+
+.book_curntlocation {
+    transform: translateX(400px);
+
+}
+
+.book-contener .book .page .meta-content .book-author-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 1s ease;
+}
+
+
+.book-contener .book .page .meta-content .book-author-info p {
+    font-size: 1.5rem;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 0;
+    font-family: "Nunito Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.book-contener .book .page .meta-content .book-info {
+    margin-top: 2rem;
+    font-size: 1.1rem;
+    color: #555;
+    font-style: italic;
+    display: flex;
+    justify-content: space-between;
+}
+
+.book-contener .book .page .meta-content .book-info p {
+    margin: 0.25rem 0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

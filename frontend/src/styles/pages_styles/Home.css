@@ -1,0 +1,209 @@
+.book_slide {
+    background-color: rgba(0, 0, 0, 0.4);
+    background-image: url("../../../public//images/slied_Book_Background_img/background_BookStore\(1\).png");
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    background-attachment: fixed;
+    height: calc(100vh - 60px);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.book_slide .background_Book_image {
+    animation: changeBackground 20s infinite;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+/* Adding a soft overlay effect for better text visibility */
+.book_slide .background_Book_image::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    /* Dark overlay */
+    box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+/* Text Styling */
+.book_slide .background_Book_image h1 {
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-transform: capitalize;
+    text-align: center;
+    position: absolute;
+    z-index: 2;
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+    animation: fadeInText 2s ease-in-out infinite alternate;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 15px 30px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+
+
+/* Fade-in Text Effect */
+@keyframes fadeInText {
+    0% {
+        opacity: 0.7;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+/* Background Image Transition */
+/* @keyframes changeBackground {
+    0% {
+        background-image: url("../../../public/images/slied_Book_Background_img/background_BookStore(4).png");
+    }
+
+    33% {
+        background-image: url("../../../public/images/slied_Book_Background_img/background_BookStore(1).png");
+    }
+
+    66% {
+        background-image: url("../../../public/images/slied_Book_Background_img/background_BookStore(3).png");
+    }
+
+    100% {
+        background-image: url("../../../public/images/slied_Book_Background_img/background_BookStore(2).png");
+    }
+} */
+
+@media only screen and (max-width: 1124px) {
+
+    .book_slide .background_Book_image h1 {
+        font-size: 3.5vw;
+    }
+}
+
+@media only screen and (max-width: 884px) {
+    .book_slide .background_Book_image h1 {
+        font-size: 4vw;
+    }
+
+}
+
+@media only screen and (max-width: 480px) {
+    .book_slide {
+        height: 500px;
+    }
+
+    .book_slide .background_Book_image h1 {
+        font-size: 3vw;
+        width: 90%;
+    }
+
+
+    .book_slide .background_Book_image h1 .cursor {
+        display: none;
+    }
+
+}
+
+.typing-container {
+    position: relative;
+    height: 20px;
+    font-size: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    /* border-right: 2px solid black; */
+}
+
+.text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0ch;
+    overflow: hidden;
+    border-right: 2px solid #fff;
+    white-space: nowrap;
+    animation: none;
+    visibility: hidden;
+}
+
+.text-1 {
+    animation: typing-1 8s steps(50) infinite;
+}
+
+.text-2 {
+    animation: typing-2 8s steps(50) infinite;
+}
+
+@keyframes typing-1 {
+
+    0%,
+    45% {
+        width: 0ch;
+        visibility: visible;
+    }
+
+    5%,
+    40% {
+        width: 49ch;
+    }
+
+    45.01%,
+    100% {
+        visibility: hidden;
+    }
+}
+
+@keyframes typing-2 {
+
+    0%,
+    50% {
+        visibility: hidden;
+        width: 0ch;
+    }
+
+    50.01%,
+    55% {
+        visibility: visible;
+        width: 0ch;
+    }
+
+    55%,
+    90% {
+        width: 34ch;
+    }
+
+    45.01%,
+    100% {
+        visibility: hidden;
+        width: 0ch;
+    }
+}

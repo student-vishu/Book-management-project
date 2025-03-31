@@ -1,0 +1,201 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.user-Book-read {
+    position: relative;
+}
+
+.user-Book-read .view-comments-btn {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    background: linear-gradient(45deg, #413d3d, transparent);
+    color: #fff;
+    padding: 10px 20px;
+    box-shadow: 0px 0px 4px #6b6666 inset;
+    font-size: 17px;
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+    cursor: pointer;
+}
+
+.user-Book-read .view-comments-btn:hover {
+    box-shadow: 0px 0px 4px #f5f4f4;
+
+}
+
+.view-comments-btn {
+    padding: 10px 16px;
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.comments-modal {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 400px;
+    height: 100vh;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease-in-out;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+}
+
+.comments-modal.open {
+    right: 0;
+}
+
+.comments-modal .modal-header {
+    padding: 16px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comments-modal .modal-body {
+    padding: 16px;
+    overflow-y: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column-reverse;
+    scrollbar-width: none;
+}
+
+.comments-modal .modal-body .comment-box {
+    margin-bottom: 16px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+}
+
+.comments-modal .modal-body .comment-box .comment-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comments-modal .modal-body .comment-box .comment-top .username {
+    font-weight: bold;
+    color: #333;
+}
+
+.comments-modal .modal-body .comment-box .comment-text {
+    color: #444;
+    margin: 1px 21px 0px 8px;
+    width: -webkit-fill-available;
+}
+
+.comments-modal .modal-body .comment-box .likes-count {
+    font-size: 13px;
+    color: #888;
+}
+
+.comments-modal .modal-body .no-comments {
+    color: #888;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.comments-modal .comment-form {
+    display: flex;
+    padding: 12px 16px;
+    border-top: 1px solid #ddd;
+    background-color: #fafafa;
+}
+
+.comments-modal .comment-form input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+    font-size: 14px;
+}
+
+.comments-modal .comment-form button {
+    margin-left: 10px;
+    padding: 8px 16px;
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* Like button */
+.comments-modal .modal-body .comment-box .comment-top .like-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #aaa;
+    transition: transform 0.2s ease;
+}
+
+.comments-modal .modal-body .comment-box .comment-top .like-btn:hover {
+    transform: scale(1.1);
+}
+
+.comments-modal .modal-body .comment-box .comment-top .like-btn.liked {
+    color: red;
+}
+
+.comments-modal .modal-header .close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+}
+
+.user-Book-read .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: calc(100vw - 400px);
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+
+.comments-modal .modal-body .comment-box .star-rating {
+    display: flex;
+    gap: 4px;
+    margin: 0 8px;
+}
+
+.comments-modal .modal-body .comment-box .star {
+    font-size: 20px;
+    color: #ccc;
+    transition: color 0.3s ease;
+}
+
+.comments-modal .modal-body .comment-box .star.filled {
+    color: #ffc107;
+}
+
+.comments-modal .modal-body .comment-box .star-rating {
+    animation: fadeInStars 0.5s ease-in;
+}
+
+@keyframes fadeInStars {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

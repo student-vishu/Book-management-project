@@ -1,0 +1,387 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.ragistrtion-book {
+    width: 100%;
+    height: 100vh;
+    background-color: powderblue;
+    animation: fadeInBackground 1.5s ease-in-out;
+    overflow: hidden;
+}
+
+@keyframes fadeInBackground {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.ragistrtion-book .Book_Body {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInForm 1.5s ease-in-out;
+
+}
+
+@keyframes fadeInForm {
+    from {
+        transform: translatex(70px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translatex(0);
+        opacity: 1;
+    }
+}
+
+.ragistrtion-book .Book_Body .Book {
+    position: relative;
+    width: 400px;
+    height: 550px;
+    margin: 0px 30px;
+}
+
+
+
+
+.ragistrtion-book .Book_Body .Book .Book_front_cover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    perspective: 1500px;
+}
+
+.ragistrtion-book .Book_Body .Book .page {
+    position: absolute;
+    width: 95%;
+    height: 95%;
+    top: 12px;
+    left: 0px;
+    perspective: 1500px;
+}
+
+.ragistrtion-book .Book_Body .Book .page .front,
+.ragistrtion-book .Book_Body .Book .page .back {
+    background: #fff;
+    border-color: #fff;
+    border-radius: 0px 20px 20px 0px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0;
+    transform-origin: left;
+    transition: transform 0.5s ease-in;
+}
+
+.ragistrtion-book .Book_Body .Book .page .front {
+    border-left: 3px solid powderblue;
+}
+
+.ragistrtion-book .Book_Body .Book .Book_front_cover .front,
+.ragistrtion-book .Book_Body .Book .page .front {
+    z-index: 1;
+    backface-visibility: hidden;
+}
+
+.ragistrtion-book .Book_Body .Book .page .back,
+.ragistrtion-book .Book_Body .Book .Book_front_cover .back {
+    z-index: 0;
+}
+
+.ragistrtion-book .Book_Body .Book .page .front .front-content,
+.ragistrtion-book .Book_Body .Book .page .back .back-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: "PT Serif", serif;
+    font-weight: 400;
+    font-style: none;
+}
+
+.ragistrtion-book .Book_Body .Book .page .back .back-content {
+    animation: coverFlip 1s ease-in-out forwards
+}
+
+.ragistrtion-book .Book_Body .Book .front_cover_opened .back .Book_Cover_back_Content,
+.ragistrtion-book .Book_Body .Book .Back_cover_close .back .Book_Cover_back_Content {
+    animation: coverFlip 0.5s ease-in-out forwards
+}
+
+.ragistrtion-book .Book_Body .Book .front_cover_close .back .Book_Cover_back_Content,
+.ragistrtion-book .Book_Body .Book .Back_cover_opened .back .Book_Cover_back_Content {
+    animation: prvCoverFlip 0.7s ease-in-out forwards
+}
+
+.ragistrtion-book .Book_Body .Book .page .back .back-content .user_submitted_info h1 {
+    margin: 20px 0px;
+    font-family: "Domine", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.ragistrtion-book .Book_Body .Book .page .back .back-content .user_submitted_info .user_Data {
+    line-height: 30px;
+}
+
+.ragistrtion-book .Book_Body .Book .page .back .back-content .user_submitted_info .user_Data .info_title {
+    font-size: 18px;
+    font-weight: bolder;
+    text-transform: capitalize;
+}
+
+.ragistrtion-book .Book_Body .Book .page .back .back-content .user_submitted_info .user_Data .user_value {
+    font-size: 17px;
+    font-weight: lighter;
+}
+
+.ragistrtion-book .Book_Body .Book .page .back .back-content .user_submitted_info .user_Data .Password {
+    -webkit-text-security: disc;
+    -webkit-text-stroke-width: thick;
+    color: #9b9898;
+    letter-spacing: 3px;
+}
+
+.ragistrtion-book .Book_Body .Book .page .back .back-content .user_submitted_info .user_Data .info_title span {
+    padding: 0px 5px;
+}
+
+
+.ragistrtion-book .Book_Body .Book .flipped .front,
+.ragistrtion-book .Book_Body .Book .flipped .back,
+.ragistrtion-book .Book_Body .Book .front_cover_opened .front,
+.ragistrtion-book .Book_Body .Book .front_cover_opened .back,
+.ragistrtion-book .Book_Body .Book .Back_cover_close .front,
+.ragistrtion-book .Book_Body .Book .Back_cover_close .back {
+    transform: rotateY(-180deg);
+}
+
+.ragistrtion-book .Book_Body .prev_button,
+.ragistrtion-book .Book_Body .next_button {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.ragistrtion-book .Book_Body .prev_button i,
+.ragistrtion-book .Book_Body .next_button i {
+    font-size: 50px;
+    color: #5f5959;
+}
+
+.ragistrtion-book .Book_Body .prev_button i:hover,
+.ragistrtion-book .Book_Body .next_button i:hover {
+    font-size: 50px;
+    color: #968d8d;
+}
+
+.ragistrtion-book .Book_Body .Book #p1 {
+    animation: frontzIndexChange 0s linear 0.25s forwards;
+}
+
+
+.ragistrtion-book .Book_Body .Book #p2 {
+    z-index: 1;
+    animation: zIndexChange 0s linear 0.4s forwards;
+}
+
+.ragistrtion-book .Book_Body .Book .front_cover_close {
+    z-index: 3;
+}
+
+.ragistrtion-book .Book_Body .Book .front_cover_opened {
+    z-index: 3;
+    animation: zIndexChange 0s linear 0.4s forwards;
+}
+
+
+.ragistrtion-book .Book_Body .Book .Book_front_cover .front,
+.ragistrtion-book .Book_Body .Book .Book_front_cover .back {
+    background: #000;
+    color: #fff;
+    border-radius: 0px 20px 20px 0px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0;
+    transform-origin: left;
+    transition: transform 0.5s ease-in;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+.ragistrtion-book .Book_Body .Book_move {
+    transform: translatex(50%);
+}
+
+.ragistrtion-book .Book_Body .Book_current_location {
+    transform: translatex(100%);
+}
+
+.ragistrtion-book .Book_Body .prve_button_move {
+    transform: translateX(-200px);
+}
+
+.ragistrtion-book .Book_Body .next_button_move {
+    transform: translateX(200px);
+}
+
+.ragistrtion-book .Book_Body .Book .page .front .front-content .user_info {
+    text-transform: capitalize;
+    width: 100%;
+    text-align: start;
+    padding: 0px 0px 0px 3vw;
+
+}
+
+
+
+.ragistrtion-book .Book_Body .Book .Back_cover_opened .front .Book_Cover_front_Content h1 {
+    font-size: 20px;
+    color: #fff;
+    margin: 20px 3px;
+    text-transform: capitalize;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+.ragistrtion-book .Book_Body .Book .Back_cover_close .back .Book_Cover_back_Content h1 {
+    font-size: 20px;
+    color: #fff;
+    margin: 20px 8px;
+    text-transform: capitalize;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.ragistrtion-book .Book_Body .Book .front .Book_Cover_front_Content .get-info-lo-rag {
+    margin: 10px 0px 0px 0px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.ragistrtion-book .Book_Body .Book .front .Book_Cover_front_Content .get-info-lo-rag button,
+.ragistrtion-book .Book_Body .Book .Back_cover_opened .front .Book_Cover_front_Content button,
+.ragistrtion-book .Book_Body .Book .Back_cover_close .back .Book_Cover_back_Content button {
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 0px 3px 3px #000 inset,
+        0px 0.9px 10px 0px #898888;
+    text-align: center;
+    text-transform: capitalize;
+    font-family: "Domine", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.ragistrtion-book .Book_Body .Book .front .Book_Cover_front_Content .get-info-lo-rag button:hover,
+.ragistrtion-book .Book_Body .Book .Back_cover_opened .front .Book_Cover_front_Content button:hover,
+.ragistrtion-book .Book_Body .Book .Back_cover_close .back .Book_Cover_back_Content button:hover {
+    font-size: 24px;
+    padding: 12px 22px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 0px 0px #000,
+        0px 0px 10px 4px #898888;
+}
+
+.ragistrtion-book .Book_Body .Book .page .front .front-content .user_info_input {
+    width: 100%;
+}
+
+.ragistrtion-book .Book_Body .Book .page .front .front-content .user_info_input input {
+    display: block;
+    width: -webkit-fill-available;
+    font-size: 20px;
+    padding: 10px 5px 10px 15px;
+    border: 2px solid;
+    border-radius: 6px;
+    margin: 10px 20px;
+    font-family: "Jost", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.ragistrtion-book .Book_Body .Book .page .front .front-content .user_info_input span {
+    color: #c61414;
+    font-weight: bold;
+    font-size: 17px;
+    margin: 0px 20px;
+    display: flex;
+    text-align: start;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+@keyframes coverFlip {
+    from {
+        transform: rotateY(0deg);
+    }
+
+    to {
+        transform: rotateY(-180deg);
+    }
+}
+
+@keyframes prvCoverFlip {
+    from {
+        transform: rotateY(-180deg);
+    }
+
+    to {
+        transform: rotateY(0deg);
+    }
+}
+
+@keyframes zIndexChange {
+    from {
+        z-index: 2;
+    }
+
+    to {
+        z-index: 0;
+    }
+}
+
+@keyframes frontzIndexChange {
+    from {
+        z-index: 0;
+    }
+
+    to {
+        z-index: 2;
+    }
+}

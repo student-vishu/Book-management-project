@@ -1,0 +1,377 @@
+.top-view-book-display {
+    background-color: #111;
+}
+
+/* Container for shimmer loader */
+
+.topBook_Display .slider-container .slick-slide .lodar {
+    height: 420px;
+    width: 100%;
+    background: #2a2a2a;
+    border-radius: 16px;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        background-color: #2a2a2a;
+    }
+
+    50% {
+        background-color: #3a3a3a;
+    }
+}
+
+
+
+.topBook_Display {
+    padding: 40px 20px;
+    background-color: #121212;
+    color: #fff;
+}
+
+/* Slider container */
+.topBook_Display .slider-container {
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    position: relative;
+}
+
+
+.topBook_Display .heding {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 30px;
+    font-weight: bold;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+.topBook_Display .slider-container .book-card {
+    background: #1f1f1f;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+}
+
+.topBook_Display .slider-container .book-card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+.topBook_Display .slider-container .book-card img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.topBook_Display .slider-container .book-card .book-details {
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-reting {
+    display: flex;
+    align-items: baseline;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-reting .rating-box {
+    display: flex;
+    align-items: center;
+    flex: 20%;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-reting .star-wrapper {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    margin-right: 6px;
+    font-size: 24px;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-reting .star-background,
+.topBook_Display .slider-container .book-card .book-details .book-reting .star-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-reting .star-background {
+    color: #ddd;
+    /* Light gray star */
+    z-index: 1;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-reting .star-fill {
+    color: gold;
+    /* Filled star */
+    z-index: 2;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-reting .rating-number {
+    font-size: 16px;
+    color: #4a4949;
+    padding-top: 10px;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-reting .book-title {
+    word-wrap: break-word;
+    flex: 80%;
+    width: 100%;
+    text-align: start;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 6px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 51px;
+    font-family: "Arvo", serif;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-author {
+    text-transform: capitalize;
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: "PT Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.topBook_Display .slider-container .book-card .book-details .book-price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #4fbcff;
+    font-family: "Domine", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+
+/* Slick Slider Styles */
+.topBook_Display .slider-container .slick-track {
+    display: flex;
+    gap: 10px;
+    margin: 30px 0px;
+}
+
+.topBook_Display .slider-container .slick-list {
+    overflow: hidden;
+}
+
+.topBook_Display .slider-container .slick-slide div {
+    width: 100%;
+}
+
+.topBook_Display .slider-container .slick-slide {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+}
+
+/* ARROW STYLING */
+.topBook_Display .slider-container .slick-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    font-size: 24px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    width: 50px;
+    height: 50px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 1;
+}
+
+/* Hover effect for arrows */
+.topBook_Display .slider-container .slick-arrow:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: black;
+}
+
+/* Positioning Previous (Left) Arrow */
+.topBook_Display .slider-container .slick-prev {
+    left: -60px;
+}
+
+
+
+/* Hide default slick arrows */
+.topBook_Display .slider-container .slick-prev::before,
+.topBook_Display .slider-container .slick-next::before {
+    display: none !important;
+}
+
+
+.topBook_Display .slider-container .slick-active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Slick Dots Container */
+.topBook_Display .slider-container .slick-dots {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    /* Adjust spacing from slider */
+    left: 50%;
+    transform: translateX(-50%);
+    list-style: none;
+    padding: 0;
+}
+
+/* Dots Style */
+.topBook_Display .slider-container .slick-dots li {
+    width: 12px;
+    height: 12px;
+    margin: 0 5px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    /* Inactive dots */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Active Dot */
+.topBook_Display .slider-container .slick-dots li.slick-active {
+    background-color: white;
+    /* Highlight active dot */
+    width: 16px;
+    height: 16px;
+}
+
+/* Hide default button inside dots */
+.topBook_Display .slider-container .slick-dots button {
+    display: none;
+}
+
+.topBook_Display .slider-container .slick-prev {
+    left: -20px;
+}
+
+/* Positioning Next (Right) Arrow */
+.topBook_Display .slider-container .slick-next {
+    right: -20px;
+}
+
+@media only screen and (max-width: 1286px) {
+    .topBook_Display .slider-container .slick-prev {
+        left: 0%;
+    }
+
+    .topBook_Display .slider-container .slick-next {
+        right: 0%;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .topBook_Display .slider-container .slick-prev {
+        left: 0%;
+    }
+
+    .topBook_Display .slider-container .slick-next {
+        right: 0%;
+    }
+
+    .topBook_Display .slider-container .book-card .book-details .book-title {
+        font-size: 16px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .topBook_Display .slider-container .book-card .book-details .book-title {
+        font-size: 15px;
+    }
+
+}
+
+@media only screen and (max-width: 480px) {
+
+    .topBook_Display .slider-container .book-card .book-details .book-title {
+        font-size: 14px;
+    }
+
+    .topBook_Display .slider-container .slick-track {
+        margin: 10px 0px;
+    }
+
+
+    /* Slick dots positioning */
+    .topBook_Display .slider-container .slick-dots {
+        display: flex !important;
+        justify-content: center;
+        margin-top: 10px;
+        list-style: none;
+        position: absolute;
+        width: 100%;
+    }
+
+    /* Default dot styling */
+    .topBook_Display .slider-container .slick-dots li {
+        display: inline-block;
+        margin: 0 5px;
+    }
+
+    /* Hide extra dots beyond the first 5 */
+    .topBook_Display .slider-container .slick-dots li:nth-child(n+6) {
+        display: none;
+    }
+
+    /* Dot button styling */
+    .topBook_Display .slider-container .slick-dots li .dot {
+        opacity: 0;
+        font-size: 0;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #888;
+        border: none;
+        outline: none;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    /* Active dot */
+    .topBook_Display .slider-container .slick-dots .slick-active .dot {
+        background-color: #fff;
+        transform: scale(1.2);
+    }
+
+}

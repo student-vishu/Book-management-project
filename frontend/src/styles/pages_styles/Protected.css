@@ -1,0 +1,14 @@
+.top_arrow_circle {
+    position: fixed;
+    bottom: 50px;
+    right: 28px;
+    width: 50px;
+    height: 50px;
+    background: #242424;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, .2);
+    cursor: pointer;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

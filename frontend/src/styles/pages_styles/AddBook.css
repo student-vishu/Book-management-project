@@ -1,0 +1,256 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.add-book-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.add-book-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.add-book-container .book-form .form-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.add-book-container .book-form label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #444;
+}
+
+.add-book-container .book-form input,
+.add-book-container .book-form textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.add-book-container .book-form textarea {
+    resize: vertical;
+}
+
+.add-book-container .book-form .form-group .error {
+    color: red;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.add-book-container .book-form .form-group .image-preview img {
+    margin-top: 10px;
+    max-width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.add-book-container .book-form button {
+    width: 100%;
+    padding: 12px;
+    background: #4a90e2;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-transform: capitalize;
+}
+
+.add-book-container .book-form button:hover {
+    background: #357ABD;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Hide arrows in Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* Modal Background */
+.addBook-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* Modal Box */
+.add-book-container .addBook-modal-overlay .modal-content {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    min-width: 320px;
+    max-width: 90%;
+    position: relative;
+    text-align: center;
+    transform: scale(0);
+    animation: scaleIn 0.3s ease forwards;
+}
+
+/* Scale Animation */
+@keyframes scaleIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.add-book-container .addBook-modal-overlay .modal-content p {
+    padding: 20px 0px;
+    font-size: 18px;
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.add-book-container .addBook-modal-overlay .modal-content h3 {
+    padding: 20px 0px;
+    font-size: 18px;
+    font-family: "PT Serif", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* Close Icon */
+.add-book-container .addBook-modal-overlay .close-icon {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s;
+}
+
+.add-book-container .addBook-modal-overlay .close-icon:hover {
+    color: #333;
+}
+
+/* Buttons */
+.add-book-container .addBook-modal-overlay .modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.add-book-container .addBook-modal-overlay .btn-confirm {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-family: "Domine", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+}
+
+.add-book-container .addBook-modal-overlay .modal-actions .btn-confirm:hover {
+    background: #45a049;
+}
+
+.add-book-container .addBook-modal-overlay .btn-cancel {
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-family: "Domine", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+}
+
+.add-book-container .addBook-modal-overlay .btn-cancel:hover {
+    background: #d73833;
+}
+
+
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    flex-direction: column;
+}
+
+.loader-overlay .loader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.loader-overlay .loader-text {
+    font-size: 1.5rem;
+    margin-top: 20px;
+    color: #333;
+    font-weight: bold;
+    position: absolute;
+    top: 58%;
+    left: 50%;
+    transform: translate(-41%, 0);
+}
+
+.loader-overlay .dot-animate::after {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    animation: dots 1.5s steps(3, end) infinite;
+}
+
+
+@keyframes dots {
+    0% {
+        content: '';
+    }
+
+    33% {
+        content: '.';
+    }
+
+    66% {
+        content: '..';
+    }
+
+    100% {
+        content: '...';
+    }
+}
