@@ -10,10 +10,27 @@ const app = express()
 //     credentials: true
 // }))
 //app.use(cors())
+// app.use(cors({
+//     origin: function (origin, callback) {
+//         if (!origin || origin.startsWith("http://localhost")) {
+//             callback(null, true); // Allow requests from any localhost domain
+//         } else {
+//             callback(new Error("Not allowed by CORS"));
+//         }
+//     },
+//     credentials: true, // Allow cookies & authentication headers
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization"]
+// }));
 app.use(cors({
     origin: function (origin, callback) {
-        if (!origin || origin.startsWith("http://localhost")) {
-            callback(null, true); // Allow requests from any localhost domain
+        const allowedOrigins = [
+            "http://localhost:3000",  // Allow local development
+            "https://book-management-project-frontend.onrender.com" // Allow deployed frontend
+        ];
+        
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
         } else {
             callback(new Error("Not allowed by CORS"));
         }
@@ -22,6 +39,7 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
 
 app.use(express.json({ limit: "16kb" }))
 app.use(express.urlencoded({ extended: true, limit: "16kb" }))
