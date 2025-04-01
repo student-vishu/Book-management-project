@@ -22,8 +22,6 @@ const app = express()
 //     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 //     allowedHeaders: ["Content-Type", "Authorization"]
 // }));
-const cors = require("cors");
-
 app.use(cors({
     origin: function (origin, callback) {
         const allowedOrigins = [
