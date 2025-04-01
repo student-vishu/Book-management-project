@@ -22,13 +22,16 @@ const app = express()
 //     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 //     allowedHeaders: ["Content-Type", "Authorization"]
 // }));
+const cors = require("cors");
+
 app.use(cors({
     origin: function (origin, callback) {
         const allowedOrigins = [
-            "http://localhost:3000",  // Allow local development
-            "https://book-management-project-frontend.onrender.com" // Allow deployed frontend
+            "http://localhost:3000",  // Local development
+            "https://book-management-project-frontend.onrender.com" // Deployed frontend
         ];
         
+        // Allow requests from Postman (null origin) or allowed domains
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
@@ -40,7 +43,7 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-
+app.options("*", cors()); // Allow all OPTIONS requests
 app.use(express.json({ limit: "16kb" }))
 app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 app.use(express.static("public"))
