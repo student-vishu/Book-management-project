@@ -1,5 +1,5 @@
 const useApiUrl = () => {
-    return "http://localhost:8000";
+    return "https://book-management-project-backend.onrender.com";
 };
 
 export default useApiUrl;
