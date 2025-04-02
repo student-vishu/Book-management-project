@@ -14,12 +14,13 @@ const AddBook = () => {
     const [formData, setFormData] = useState(null);
     const [showLoader, setShowLoader] = useState(false);
 
-    const currentYear = new Date().getFullYear();
+    const currentDate = new Date();
+    const formattedDate = `${String(currentDate.getDate()).padStart(2, '0')}/${String(currentDate.getMonth() + 1).padStart(2, '0')}/${currentDate.getFullYear()}`;
 
     const initialValues = {
         bookName: '',
         author: '',
-        publishedYear: currentYear,
+        publishedYear: formattedDate,
         genre: '',
         description: '',
         price: '',

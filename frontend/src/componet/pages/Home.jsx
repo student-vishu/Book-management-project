@@ -62,7 +62,7 @@ const Home = () => {
                 }
             }
 
-            console.log("Book Reviews:", responseData);
+            // console.log("Book Reviews:", responseData);
             return responseData;
         } catch (error) {
             console.error("Error fetching book review:", error.message);
@@ -124,6 +124,7 @@ const Home = () => {
                 onClose={() => setModalOpen(false)}
                 book={selectedBook}
                 userReview={userReview}
+                readLater={true}
             />
         </>
 

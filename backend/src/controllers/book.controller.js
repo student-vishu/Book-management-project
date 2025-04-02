@@ -77,7 +77,7 @@ const createBook = asyncHandler(async (req, res) => {
 })
 
 const getAllBooks = asyncHandler(async (req, res) => {
-    const books = await Book.find().populate("user", "name email")//The populate() method in Mongoose is used to automatically replace a field in a document with the actual data from a related document.Then, instead of returning just the user ObjectId, MongoDB will return the full user details with only the specified fields.
+    const books = await Book.find()//.populate("user", "name email")//The populate() method in Mongoose is used to automatically replace a field in a document with the actual data from a related document.Then, instead of returning just the user ObjectId, MongoDB will return the full user details with only the specified fields.
 
     //console.log("books", books)
 

@@ -4,6 +4,10 @@ const wishlistSchema = new Schema({
     book: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Book"
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
     }
 }, { timestamps: true })
 

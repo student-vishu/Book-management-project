@@ -66,7 +66,7 @@ const registerUser = asyncHandler(async (req, res) => {
     })
     const existedgAdmin = await User.findOne({ role: 'admin' })
     if (existedgAdmin) {
-        return res.status(202).json({ existedgAdmin })
+        // return res.status(202).json({ existedgAdmin })
 
     }
 
@@ -84,7 +84,7 @@ const registerUser = asyncHandler(async (req, res) => {
             throw new ApiError(500, "Something went wrong while registering admin");
         }
         console.log("Admin registered successfully:", adminUser);
-        //return res.status(202).json({ existedgAdmin })
+        // return res.status(202).json({ existedgAdmin })
 
     }
 

@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 999;
 }
 
 /* Modal box */
@@ -55,6 +55,8 @@
   font-weight: 400;
   font-style: normal;
   text-transform: capitalize;
+  margin: 0;
+  padding: 0;
 }
 
 .modal-overlay .modal-content .book-detail {
@@ -68,7 +70,7 @@
 /* Book image */
 .modal-overlay .modal-content .book-detail .book-img .modal-book-image {
   width: 250px;
-  height: 100%;
+  height: 300px;
   border-radius: 10px;
   object-fit: cover;
 }
@@ -105,6 +107,7 @@
   font-family: "PT Serif", serif;
   font-weight: 400;
   font-style: normal;
+  padding: 0px 0px 10px 0px;
 }
 
 .modal-overlay .modal-content .book-info .book-content .modal-review {
@@ -163,10 +166,16 @@
   font-size: 16px;
   font-family: "Lato", sans-serif;
   font-style: normal;
+  text-transform: capitalize;
 }
 
 .modal-overlay .modal-content .book-info .modal-buttons .btn.primary {
   background-color: #007bff;
+  color: white;
+}
+
+.modal-overlay .modal-content .book-info .modal-buttons .btn.danger {
+  background-color: #ff0000;
   color: white;
 }
 
@@ -191,9 +200,31 @@
   height: -webkit-fill-available;
 }
 
+.modal-overlay .modal-content .book-info .book-content .star-rating .star {
+  color: #ccc;
+  /* Default empty star color */
+  position: relative;
+  display: inline-block;
+}
+
 .modal-overlay .modal-content .book-info .book-content .star-rating .star.filled {
   color: gold;
   transition: color 0.2s ease-in-out;
+
+}
+
+.modal-overlay .modal-content .book-info .book-content .star-rating .star.half-filled {
+  position: relative;
+}
+
+.modal-overlay .modal-content .book-info .book-content .star-rating .star.half-filled::before {
+  content: "★";
+  color: gold;
+  /* Half star filled */
+  position: absolute;
+  left: 0;
+  width: 50%;
+  overflow: hidden;
 }
 
 .modal-overlay .modal-content .book-info .book-content .star-rating .hide {
@@ -257,4 +288,118 @@ textarea::-webkit-scrollbar-thumb {
 textarea::-webkit-scrollbar-track {
   border-radius: 20px;
   background-color: #f1f1f1;
+}
+
+
+.userBook-addBook-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Modal Box */
+.userBook-addBook-modal-overlay .modal-content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  min-width: 320px;
+  max-width: 90%;
+  position: relative;
+  text-align: center;
+  transform: scale(0);
+  animation: scaleIn 0.3s ease forwards;
+}
+
+/* Scale Animation */
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.userBook-addBook-modal-overlay .modal-content p {
+  padding: 20px 0px;
+  font-size: 18px;
+  font-family: "PT Serif", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.userBook-addBook-modal-overlay .modal-content h3 {
+  padding: 20px 0px;
+  font-size: 18px;
+  font-family: "PT Serif", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Close Icon */
+.userBook-addBook-modal-overlay .close-icon {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s;
+}
+
+.userBook-addBook-modal-overlay .close-icon:hover {
+  color: #333;
+}
+
+/* Buttons */
+.userBook-addBook-modal-overlay .modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.userBook-addBook-modal-overlay .btn-confirm {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-family: "Domine", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.userBook-addBook-modal-overlay .modal-actions .btn-confirm:hover {
+  background: #45a049;
+}
+
+.userBook-addBook-modal-overlay .btn-cancel {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-family: "Domine", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+}
+
+.userBook-addBook-modal-overlay .btn-cancel:hover {
+  background: #d73833;
 }

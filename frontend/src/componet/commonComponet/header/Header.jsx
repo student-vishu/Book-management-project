@@ -13,7 +13,7 @@ const Header = () => {
     const [showConfirmPopup, setShowConfirmPopup] = useState(false);
     const [errors, setErrors] = useState({});
     const [touched, setTouched] = useState({});
-    const [successMessage, setSuccessMessage] = useState(false)
+    const [successMessage, setSuccessMessage] = useState(false);
 
     const [user, setUser] = useState(null);
 
@@ -35,7 +35,7 @@ const Header = () => {
                 id: userLogin?._id
             })
         }
-    }, [successMessage])
+    }, [successMessage, location])
 
     const userProfileNaviget = () => {
         navigate('/UserProfile')
@@ -167,14 +167,14 @@ const Header = () => {
             <div className='navebar'>
                 <div className='logo'>
                     <ul>
-                        {location.pathname !== "/UserProfile" && !userAdminLogin && (
 
-                            <li>
+                        <li>
+                            {location.pathname !== "/UserProfile" && !userAdminLogin && (
                                 <div className="profile-avatar" onClick={toggleProfileModal}>
                                     {getInitial(user?.name)}
                                 </div>
-                            </li>
-                        )}
+                            )}
+                        </li>
 
                         <li>
                             <NavLink to={"/Book-Management"}>
@@ -188,11 +188,10 @@ const Header = () => {
                     <ul>
                         <li><NavLink to={"/Home"}>Home</NavLink></li>
                         <li><NavLink to={"/library"}>Library</NavLink></li>
-                        <li><button onClick={userLogout} className="logout-btn">Logout</button></li>
                         <li><NavLink to={"/BookDisplay"}>Books</NavLink></li>
                         <li><NavLink to={"/AddBook"}>AddBook</NavLink></li>
                         {location.pathname === "/UserProfile" || userAdminLogin ?
-                            <li li > <NavLink to={"/UserProfile"}>Profile</NavLink></li> : null}
+                            <li > <NavLink to={"/UserProfile"}>Profile</NavLink></li> : null}
                         {userAdminLogin && (
                             <li><NavLink to={"/admin-dashboard"}>Admin</NavLink></li>
                         )}
@@ -251,6 +250,7 @@ const Header = () => {
 
 
                                 <div className='user-profile-update'>
+                                    <button type='button' onClick={userLogout} className="user-logout">logout</button>
                                     {userProfileUpdate ? (
                                         <button type='button' onClick={handleCancelUpdate} className="close-profile">Cancel</button>
                                     ) : (
@@ -273,6 +273,9 @@ const Header = () => {
                                 <button type='button' onClick={userProfileNaviget} className="user-acticity-button">Read later book</button>
 
                             </div>
+                        </div>
+                        <div className='back-cover' onClick={toggleProfileModal}>
+
                         </div>
                     </div>
                 )

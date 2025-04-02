@@ -25,8 +25,9 @@ const Library = () => {
         const user =
             JSON.parse(localStorage.getItem('userLogin')) ||
             JSON.parse(localStorage.getItem('userAdminLogin')) || null;
-        setUserData(user?._id || null);
-    }, []);
+        setUserData(user?._id || null); // Ensure userData is set properly
+    }, [modalOpen === false]);
+
 
     const fetchBooks = async () => {
         try {
@@ -107,16 +108,15 @@ const Library = () => {
         }
         setModalOpen(!modalOpen);
     };
-
     const fetchBookReview = async (bookId) => {
-        if (!bookId || !userData) return;
+        if (!bookId || !userData) return; // Check if userData is null or undefined
 
         try {
             const res = await fetch(`${baseUrl}/api/v1/review/${bookId}`);
-            if (!res.ok) throw new Error('Failed to fetch review');
+            // if (!res.ok) throw new Error('Failed to fetch review');
             const data = await res.json();
 
-            const userReview = data?.data?.review?.find(r => r.user._id === userData);
+            const userReview = data?.data?.review?.find(r => r.user._id === userData) || "";
             if (userReview) {
                 setUserReview({
                     rating: userReview.rating,
@@ -127,6 +127,7 @@ const Library = () => {
             console.error('Review Fetch Error:', err);
         }
     };
+
 
     return (
         <div>
@@ -210,31 +211,6 @@ const Library = () => {
                     )}
                 </div>
 
-                <h2 className='all-books-heading'>All Books</h2>
-                <div className='book-Container '>
-                    {bookData?.map((item, index) => {
-                        const percentage = (item.rating / 5) * 75;
-                        return (
-                            <div className='book-card' key={index} onClick={() => toggleModal(item)}>
-                                <img src={item?.coverImage} alt="book-cover" />
-                                <div className='book-info'>
-                                    <div className='book-reting'>
-                                        <h3 className="book-title">{item.bookName}</h3>
-                                        <div className="rating-box">
-                                            <div className="star-wrapper">
-                                                <div className="star-background">★</div>
-                                                <div className="star-fill" style={{ width: `${percentage}%` }}>★</div>
-                                            </div>
-                                            <span className="rating-number">{item.rating}</span>
-                                        </div>
-                                    </div>
-                                    <h2 className='author-name'>by {item?.author}</h2>
-                                    <p className='book-amount'>₹{item?.price}</p>
-                                </div>
-                            </div>
-                        )
-                    })}
-                </div>
 
             </section>
 
@@ -243,9 +219,11 @@ const Library = () => {
                 onClose={() => setModalOpen(false)}
                 book={selectedBook}
                 userReview={userReview}
+                readLater={true}
             />
         </div>
     );
 };
+
 
 export default Library;

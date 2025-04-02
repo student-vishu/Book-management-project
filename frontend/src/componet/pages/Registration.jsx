@@ -150,7 +150,7 @@ const Registration = () => {
                                 }
                             })
                             const responseData = await response.json();
-                            // console.log("response", responseData)
+                            console.log("response", responseData)
                             if (responseData.statuscode === 200) {
 
                                 const autoLogin = {

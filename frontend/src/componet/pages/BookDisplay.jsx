@@ -9,7 +9,7 @@ const BookDisplay = () => {
     const baseUrl = useApiUrl()
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    const bookId = params.get('Book') || "67dc2005e0fd7353583fbe9c";
+    const bookId = params.get('Book') || "67ebd5eb3fcb62d93bdae64c";
 
     const [isOpen, setIsOpen] = useState(false);
     const [bookData, setBookData] = useState(null)
@@ -95,10 +95,10 @@ const CommentsModal = (props) => {
         if (reviewData) {
             const formatted = reviewData.map((item, index) => ({
                 id: index,
-                user: item.user.name,
-                comment: item.comment,
-                likes: item.likes || 0,
-                rating: item.rating || 0,
+                user: item.user?.name,
+                comment: item?.comment,
+                likes: item?.likes || 0,
+                rating: item?.rating || 0,
                 likedByUser: false,
             }));
             setComments(formatted);
