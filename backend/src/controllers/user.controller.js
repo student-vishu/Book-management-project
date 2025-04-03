@@ -136,7 +136,7 @@ const loginUser = asyncHandler(async (req, res) => {
     //user ne badhi vastu mokalvani sivay pass and refreshtoken
     const loggedinUser = await User.findById(user._id).select("-password -refreshToken")
     await Activity.create({
-        description: `new user registered: ${user.name}`,
+        description: `user logedin: ${user.name}`,
         user: user._id
     })
     //when we send cookies , we design option.
