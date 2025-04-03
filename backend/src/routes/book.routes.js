@@ -8,6 +8,7 @@ const router = Router()
 router.route('/addBook').post(verifyJWT, upload.single("coverImage"), createBook)
 
 router.route('/getAllBooks').get(verifyJWT, getAllBooks)
+// router.route('/getAllBooks').get(getAllBooks)
 
 router.route('/:id').get(getBookById)
 

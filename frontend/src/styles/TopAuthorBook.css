@@ -21,6 +21,46 @@
     border-radius: 20px;
 }
 
+.book-slider-container .heding {
+    position: fixed;
+    top: 23px;
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+.book-slider-container .book-slider .lodar {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: authorpulse 1.5s infinite ease-in-out;
+    background-color: #ccc;
+}
+
+.book-slider-container .book-slider .lodar p {
+    font-family: "Arvo", serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 3vw;
+}
+
+@keyframes authorpulse {
+
+    0%,
+    100% {
+        background-color: #ccc;
+    }
+
+    50% {
+        background-color: #b5b0b0;
+    }
+}
 
 
 .book-slider-container .book-slider .slides {
@@ -292,13 +332,16 @@
 }
 
 @media only screen and (max-width: 768px) {
+
     .book-slider-container {
         height: 90vh;
     }
 
     .book-slider-container .book-slider {
+        background: none;
         inset: 0;
         border-radius: 0;
+        margin-top: 23px;
     }
 
     .book-slider-container .book-slider .slides.active {
@@ -333,6 +376,11 @@
 
 @media only screen and (max-width: 480px) {
 
+    .book-slider-container .heding {
+        font-size: 16px;
+    }
+
+
     .book-slider-container {
         height: 88vh;
     }
@@ -340,6 +388,7 @@
     .book-slider-container .book-slider {
         inset: 0;
         border-radius: 0;
+        margin-top: 31px;
     }
 
     .book-slider-container .book-slider .slides .content .author-info img {

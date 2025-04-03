@@ -1,19 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import confetti from 'canvas-confetti';
 import '../../styles/pages_styles/AddBook.css';
 import useApiUrl from '../commonComponet/useApiUrl';
 import { Player } from '@lottiefiles/react-lottie-player';
-import { postApiImageData } from '../../config';
+import { getApiData, putApiData } from '../../config';
+import { useLocation, useNavigate } from 'react-router';
+import Loader from '../commonComponet/Loader';
 
-const AddBook = () => {
-    const baseUrl = useApiUrl();
+const UpdateBook = () => {
+    const baseUrl = useApiUrl()
+    const location = useLocation();
+    const navigate = useNavigate()
+
     const [preview, setPreview] = useState(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [formData, setFormData] = useState(null);
     const [showLoader, setShowLoader] = useState(false);
+    const [Loading, setLoading] = useState(false);
+    const [bookId, setBookId] = useState(null)
 
     const currentDate = new Date();
     const formattedDate = `${String(currentDate.getDate()).padStart(2, '0')}/${String(currentDate.getMonth() + 1).padStart(2, '0')}/${currentDate.getFullYear()}`;
@@ -22,19 +29,71 @@ const AddBook = () => {
 
 
     const defaultValue = {
+        id: '',
         bookName: '',
         author: '',
         publishedYear: formattedDate,
         genre: '',
         description: '',
         price: '',
-        category: '',
         coverImage: null
     };
 
-    const [initialValues, setInitialValues] = useState(() => {
-        return JSON.parse(localStorage.getItem("userBookData")) || defaultValue
-    });
+    const [initialValues, setInitialValues] = useState(defaultValue);
+
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const bookId = params.get('Book') || "";
+        setBookId(bookId)
+
+        // Load saved form data from localStorage
+        const savedData = JSON.parse(localStorage?.getItem('userUpdateBookData')) || ""
+        if (savedData) {
+            setInitialValues(savedData);
+            setPreview(savedData.coverImage)
+        }
+
+        if (bookId) {
+            fetchBooks(bookId);
+            localStorage.setItem('bookUpdate', true)
+        }
+    }, []);
+
+    const fetchBooks = async (bookId) => {
+        setLoading(true)
+        try {
+            const res = await getApiData(`${baseUrl}/api/v1/books/getBookById?_id=${bookId}`, {
+                withCredentials: true,
+            });
+            setLoading(false)
+
+            if (res && res?.statuscode === 200) {
+                if (res && res?.data) {
+                    setInitialValues({
+                        id: res.data._id || '',
+                        bookName: res.data.bookName || '',
+                        author: res.data.author || '',
+                        publishedYear: res.data.publishedYear || '',
+                        genre: res.data.genre || '',
+                        description: res.data.description || '',
+                        price: res.data.price || '',
+                        coverImage: res.data.coverImage || null,
+                    });
+                    if (res.data.coverImage) {
+                        setPreview(`${res.data.coverImage}`);
+                    }
+                }
+            } else {
+                console.error('Failed to fetch books');
+            }
+
+        } catch (error) {
+            setLoading(false)
+            console.error('Fetch Error:', error);
+        }
+    };
+
 
     const validationSchema = Yup.object({
         bookName: Yup.string().trim().required('Book name is required'),
@@ -48,7 +107,6 @@ const AddBook = () => {
             .typeError('Price must be a number')
             .positive('Price must be positive')
             .required('Price is required'),
-        category: Yup.string().trim().required('Category is required'),
         coverImage: Yup.mixed().required('Cover image is required')
     });
 
@@ -85,7 +143,6 @@ const AddBook = () => {
         formData.append('genre', values.genre);
         formData.append('description', values.description);
         formData.append('price', values.price);
-        formData.append('category', values.category);
         formData.append('coverImage', values.coverImage);
 
         // if (values.coverImage) {
@@ -93,7 +150,7 @@ const AddBook = () => {
         // }
 
         try {
-            const response = await postApiImageData(`${baseUrl}/api/v1/books/addBook`, formData, {
+            const response = await putApiData(`${baseUrl}/api/v1/books/${values.id}`, formData, {
                 withCredentials: true,
             });
 
@@ -101,18 +158,20 @@ const AddBook = () => {
 
 
             // console.log(response)
-            if (response && response.statuscode === 201) {
-                localStorage.setItem("bookdelete", true); // Remove saved data
+            if (response && response.statuscode === 200) {
+                localStorage.setItem("bookupdatedelete", true); // Remove saved data
                 confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
                 setShowSuccessModal(true);
                 firworkAnimation();
-                localStorage.removeItem("userBookData");
                 setInitialValues(defaultValue);
+                localStorage.setItem("bookUpdate", false);
+                localStorage.removeItem("userUpdateBookData");
                 resetForm();
                 setPreview(null);
                 setTimeout(() => {
-                    localStorage.setItem("bookdelete", false); // Remove saved data
+                    localStorage.setItem("bookupdatedelete", false); // Remove saved data
                 }, 100);
+
             } else {
                 alert(response?.message || 'Something went wrong');
             }
@@ -125,40 +184,43 @@ const AddBook = () => {
 
 
     const cancelBookForm = () => {
-        localStorage.setItem("bookdelete", true); // Remove saved data
+        // Remove saved data
+        localStorage.setItem("bookupdatedelete", true); // Remove saved data
+        localStorage.setItem("bookUpdate", false);
         setInitialValues(defaultValue); // Reset initial form values
         formData?.resetForm(); // ✅ Reset Formik form
         setShowConfirmModal(false);
         setCancelBook(false);
-        localStorage.removeItem("userBookData"); // Remove saved data
+        localStorage.removeItem("userUpdateBookData"); // Remove saved data
         setPreview(null); // Clear preview image
         setTimeout(() => {
-            localStorage.setItem("bookdelete", false); // Remove saved data
+            localStorage.setItem("bookupdatedelete", false); // Remove saved data
         }, 100);
-        window.location.reload();
+        navigate("/Home")
     };
 
 
     return (
         <div className="add-book-container">
-            <h2>Add New Book</h2>
+            <h2>Update Book</h2>
             <Formik
                 initialValues={initialValues}
+                enableReinitialize={true}
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
 
                     setFormData({ values, resetForm });
                     setShowConfirmModal(true);
                     setSubmitting(false);
-                    if (values?.bookName == "" || values?.author == "" || values?.category == "" || values?.coverImage == "" || !values?.coverImage || values?.description == "" || values?.genre == "" || values?.price == "") {
-                        localStorage.removeItem("userBookData")
+                    if (values?.bookName == "" || values?.author == "" || values?.coverImage == "" || !values?.coverImage || values?.description == "" || values?.genre == "" || values?.price == "") {
+                        localStorage.removeItem("userUpdateBookData")
                     }
                 }}
             >
                 {({ values, setFieldValue, resetForm }) => {
-                    if (values?.bookName !== "" || values?.author !== "" || values?.category !== "" || values?.coverImage || values?.description !== "" || values?.genre !== "" || values?.price !== "") {
-                        if (JSON.parse(localStorage?.getItem("bookdelete")) === false) {
-                            localStorage.setItem("userBookData", JSON.stringify(values));
+                    if (values?.bookName !== "" || values?.author !== "" || values?.coverImage || values?.description !== "" || values?.genre !== "" || values?.price !== "") {
+                        if (JSON.parse(localStorage?.getItem("bookupdatedelete")) === false) {
+                            localStorage.setItem("userUpdateBookData", JSON.stringify(values));
                         }
                     }
                     return (
@@ -197,12 +259,6 @@ const AddBook = () => {
                                 <Field type="number" name="price" min="0" placeholder="Enter price (e.g. 499)" />
                                 <ErrorMessage name="price" component="div" className="error" />
                             </div>
-
-                            <div className="form-group">
-                                <label>Category</label>
-                                <Field type="text" name="category" placeholder="Enter category (e.g. Best Seller)" />
-                                <ErrorMessage name="category" component="div" className="error" />
-                            </div>
                             <div className="form-group">
                                 <label>Cover Image</label>
                                 <input
@@ -224,7 +280,7 @@ const AddBook = () => {
                                 )}
                             </div>
                             <div className='btn'>
-                                <button type="submit">Add Book</button>
+                                <button type="submit">Update Book</button>
                                 <button
                                     type="button"
                                     className="denger"
@@ -246,9 +302,9 @@ const AddBook = () => {
                         <div className="modal-content scale-in">
                             <span className="close-icon" onClick={() => setShowConfirmModal(false)}>✖</span>
                             {cancelBook ?
-                                <p>Are you sure you want to not add  this book?</p>
+                                <p>Are you sure you want to not Update  this book?</p>
                                 :
-                                <p>Are you sure you want to add this book?</p>
+                                <p>Are you sure you want to Update this book?</p>
                             }
                             <div className="modal-actions">
                                 <button
@@ -267,7 +323,7 @@ const AddBook = () => {
                                     {cancelBook ?
                                         "Yes, cancel"
                                         :
-                                        "Yes, Submit"
+                                        "Yes, Update"
                                     }
                                 </button>
                                 <button className="btn-cancel" onClick={() => setShowConfirmModal(false)}>Cancel</button>
@@ -290,7 +346,7 @@ const AddBook = () => {
                                 src="/images/book-loader.json"
                                 style={{ height: '300px', width: '300px' }}
                             />
-                            <h2 className="loader-text">Book is adding to library<span className="dot-animate"></span></h2>
+                            <h2 className="loader-text">Book is Updating to library<span className="dot-animate"></span></h2>
                         </div>
                     </div>
                 )
@@ -302,15 +358,24 @@ const AddBook = () => {
                 showSuccessModal && (
                     <div className="addBook-modal-overlay">
                         <div className="modal-content scale-in">
-                            <span className="close-icon" onClick={() => setShowSuccessModal(false)}>✖</span>
-                            <h3>🎉 Book submitted successfully!</h3>
-                            <button className="btn-confirm" onClick={() => setShowSuccessModal(false)}>Close</button>
+                            <span className="close-icon" onClick={() => { setShowSuccessModal(false); navigate("/Home") }}>✖</span>
+                            <h3>🎉 Book updated  successfully!</h3>
+                            <button className="btn-confirm" onClick={() => { setShowSuccessModal(false); navigate("/Home") }}>Close</button>
                         </div>
                     </div>
                 )
+            }
+
+            {
+                Loading ?
+                    <Loader />
+                    : null
             }
         </div >
     );
 };
 
-export default AddBook;
+export default UpdateBook;
+
+
+

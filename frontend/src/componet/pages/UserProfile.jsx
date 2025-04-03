@@ -5,6 +5,8 @@ import "../../styles/pages_styles/UserProfile.css";
 import useApiUrl from "../commonComponet/useApiUrl";
 import Loader from "../commonComponet/Loader"
 import BookReviewModal from "../commonComponet/BookReviewModal";
+import { deleteApiData, getApiData, postApiImageData, putApiUserProfileUpdate } from "../../config";
+import { NavLink } from "react-router";
 
 const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -41,47 +43,61 @@ const UserProfile = () => {
     const [userData, setUserData] = useState(null);
     const [readLaterbookData, setReadLaterbookData] = useState(null);
     const [user, setUser] = useState(false);
-    const [readLeater, setReadLeater] = useState(false)
+    const [readLeater, setReadLeater] = useState(false);
+    const [profileImage, setProfileImage] = useState(null);
+    const [userIdForImageChange, setuserIdForImageChange] = useState(null)
 
 
     useEffect(() => {
-
         const user =
             JSON.parse(localStorage.getItem('userLogin')) ||
             JSON.parse(localStorage.getItem('userAdminLogin')) || null;
-        setUserData(user?._id || null);
-        fetchBooks(user?._id);
-        fetchReadLaterBook(user?._id);
-        const token = localStorage.getItem("token");
-        const role = localStorage.getItem("role"); // Get role from localStorage
 
-        let apiEndpoint = role === "admin"
-            ? `${baseUrl}/api/v1/users/getAdminProfile`
-            : `${baseUrl}/api/v1/users/current-user`;
+        if (user?._id) {
+            setUserData(user._id);
+            fetchBooks(user._id);
+            fetchReadLaterBook(user._id);
+            setuserIdForImageChange(user._id);
+            fetchUserProfile(); // Only call if user exists
+        }
+    }, []);
 
-        setLoading(true)
+    const getImageData = async (imageId) => {
+        if (imageId) {
 
-        fetch(apiEndpoint, {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            credentials: "include",
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+            try {
+                const res = await getApiData(`${baseUrl}/api/v1/profileImage/getProfileImage/${imageId}`, { withCredentials: true })
+
+                if (res && res?.data) {
+                    if (res?.data?.image && res?.data?.image !== "") {
+                        setProfileImage(res?.data?.image)
+                    } else {
+                        setProfileImage("/images/author-image.png")
+                    }
                 }
 
-                return response.json();
-            })
-            .then(data => {
-                // console.log("API Response:", data);
-                setProfile(data.data || {});
-                setLoading(false)
-            })
-            .catch(error => console.error("Error fetching profile:", error));
-    }, [!successMessage ]);
+            } catch (error) {
+                console.error('Review Fetch Error:', error);
+            }
+
+        }
+    }
+
+    const fetchUserProfile = async () => {
+        try {
+            const res = await getApiData(`${baseUrl}/api/v1/users/current-user`, { withCredentials: true, })
+
+            if (res && res?.data) {
+                setProfile(res?.data);
+                if (res?.data._id) {
+                    getImageData(res?.data._id)
+                }
+            }
+
+        } catch (error) {
+            console.error('Review Fetch Error:', error);
+        }
+    }
 
     const toggleModal = (book, name) => {
         setUserReview(null);
@@ -98,184 +114,234 @@ const UserProfile = () => {
         } else {
             setUser(false)
             setReadLeater(name)
-
         }
         setModalOpen(!modalOpen);
     };
 
     const fetchBooks = async (userData) => {
         setLoading(true);
-        try {
-            const res = await fetch(`${baseUrl}/api/v1/books/getAllBooks`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-            });
-            if (!res.ok) throw new Error('Failed to fetch books');
-            const data = await res.json();
 
-            // console.log("user",data);
-            // console.log("user id",userData);
-            const userBooks = data?.data.filter(r => r?.user === userData);
-            if (userBooks) {
+        try {
+            const res = await getApiData(`${baseUrl}/api/v1/books/getAllBooks`, {
+                withCredentials: true,
+            });
+
+            if (res && res?.statuscode === 200) {
+                if (res && res?.data) {
+                    const userBooks = res?.data?.filter(r => r?.user === userData);
+                    if (userBooks) {
+                        setBookData(userBooks || []);
+                    }
+                }
                 setLoading(false);
-                
-                setBookData(userBooks || []);
+            } else {
+                console.error('Failed to fetch books');
             }
-            
-        } catch (err) {
+
+        } catch (error) {
             setLoading(false);
-            console.error('Fetch Error:', err);
+            console.error('Fetch Error:', error);
         }
     };
 
 
     const fetchBookReview = async (bookId) => {
-        if (!bookId || !userData) return; // Ensure userData is available
+        if (bookId) {
+            try {
+                const res = await getApiData(`${baseUrl}/api/v1/review/${bookId}`)
 
-        try {
-            const res = await fetch(`${baseUrl}/api/v1/review/${bookId}`);
-            // if (!res.ok) throw new Error('Failed to fetch review');
-            const data = await res.json();
+                if (res && res.statuscode === 200) {
+                    if (res && res.data && res.data.review) {
+                        const userReview = res.data?.review.find((r) => r.user._id === userData)
+                        if (userReview) {
+                            // console.log("review",userReview )
+                            setUserReview({
+                                rating: userReview.rating,
+                                reviewText: userReview.comment,
+                            })
+                        }
+                    }
+                } else {
+                    console.error('Failed to fetch books review');
+                }
 
-            if (!data?.data?.review) return;
-
-            const userReview = data.data.review.find(r => r.user?._id === userData);
-            if (userReview) {
-                setUserReview({
-                    rating: userReview.rating,
-                    reviewText: userReview.comment,
-                });
+            } catch (error) {
+                console.error('Review Fetch Error:', error);
             }
-        } catch (err) {
-            console.error('Review Fetch Error:', err);
+        } else {
+            console.error("❌ Error: bookId is missing in API call!");
+
         }
     };
 
     const fetchReadLaterBook = async (userData) => {
 
         try {
-            const res = await fetch(`${baseUrl}/api/v1/wishlist/getWishlistItem`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-            });
-            if (!res.ok) throw new Error('Failed to fetch review');
-            const responseData = await res.json();
-            // console.log(responseData);
+            const res = await getApiData(`${baseUrl}/api/v1/wishlist/getWishlistItem`, {
+                withCredentials: true
+            })
+            if (res && res.statuscode === 200) {
+                if (res && res.data) {
+                    const userReadBooks = res.data?.filter((r) => r.user === userData)
+                    if (userReadBooks) {
+                        setReadLaterbookData(userReadBooks);
+                    }
+                }
 
-
-            const userReadBooks = responseData?.data.filter(r => r?.user === userData);
-            // console.log("user read later book", userReadBooks);
-
-            if (userReadBooks) {
-                setReadLaterbookData(userReadBooks);
+            } else {
+                console.error('Failed to fetch review');
             }
-        } catch (err) {
-            console.error('Review Fetch Error:', err);
+
+        } catch (error) {
+            console.error('Review Fetch Error:', error);
+
         }
+
     };
 
     const handleUpdateProfile = async (values) => {
-        const token = localStorage.getItem("token");
-        const role = localStorage.getItem("role");
+        setLoading(true);
 
-        let updateEndpoint = role === "admin"
-            ? `${baseUrl}/api/v1/users/updateAdminProfile/${profile._id}`
-            : `${baseUrl}/api/v1/users/updateUserProfile/${profile._id}`;
-        setLoading(true)
-        
+        const userData = {
+            _id: profile._id,
+            ...values,
+        }
+
         try {
-            const response = await fetch(updateEndpoint, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                credentials: "include",
-                body: JSON.stringify({
-                    _id: profile._id,
-                    ...values,
-                }),
-            });
-            
-            if (!response.ok) {
-                throw new Error("Failed to update profile");
-            }
-            
-            if (response.ok) {
+            const res = await putApiUserProfileUpdate(`${baseUrl}/api/v1/users/updateUserProfile/${profile._id}`, userData, {
+                withCredentials: true
+            })
+
+            console.log("update profile", res)
+
+            if (res && res.statuscode === 200) {
                 setLoading(false)
                 setSuccessMessage("profile updated successfully")
                 setProfile({ ...profile, ...values });
                 setIsEditing(false);
+
                 setTimeout(() => {
                     setSuccessMessage(null)
                 }, 2000);
+
+                // Save updated profile in localStorage
                 localStorage.setItem("userLogin", JSON.stringify({ ...profile, ...values }))
+            } else {
+                setLoading(false)
+                console.error("Failed to updating profile");
             }
+
         } catch (error) {
-            setLoading(true)
+            setLoading(false)
             console.error("Error updating profile:", error);
         }
+
     };
 
     const deleteBook = async (id) => {
         setLoading(true);
         try {
-            const res = await fetch(`${baseUrl}/api/v1/books/${id}`, {
-                method: 'delete',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-            });
-            if (!res.ok) throw new Error('Failed to fetch books');
-            const response = await res.json();
-            // console.log("delete", response)
-            if (response.statuscode === 200) {
-                setLoading(false)
-                setSuccessMessage("book remove susseccfully")
+            const res = await deleteApiData(`${baseUrl}/api/v1/books/${id}`, {
+                withCredentials: true
+            })
+
+            setLoading(false)
+            if (res && res.statuscode === 200) {
+                setSuccessMessage("book remove susseccfully");
+                setBookData(prevBooks => prevBooks.filter(book => book._id !== id));
                 setTimeout(() => {
                     setSuccessMessage(null)
                 }, 2000);
                 toggleModal()
+            } else {
+                setSuccessMessage("Unexpected error occurred");
+                setTimeout(() => {
+                    setSuccessMessage(null)
+                }, 2000);
             }
-        } catch (err) {
+
+        } catch (error) {
             setLoading(false)
-            setSuccessMessage("unchecked error")
+            setSuccessMessage("Unexpected error occurred");
             setTimeout(() => {
                 setSuccessMessage(null)
             }, 2000);
-            console.error('Fetch Error:', err);
+            console.error('Delete Book Error:', error);
         }
     }
 
     const deleteReadLaterBook = async (readLaterBookId) => {
         setLoading(true);
-
-        // console.log(readLaterBookId);
-        // console.log("read later book", readLaterBookId);
-
-
         try {
-            const res = await fetch(`${baseUrl}/api/v1/wishlist/${readLaterBookId}`, {
-                method: 'delete',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-            });
-            if (!res.ok) throw new Error('Failed to fetch review');
-            const responseData = await res.json();
-            // console.log(responseData);
+            const res = await deleteApiData(`${baseUrl}/api/v1/wishlist/${readLaterBookId}`, {
+                withCredentials: true
+            })
 
-            if (res.ok) {
-                setSuccessMessage("book remove susseccfully")
+            setLoading(false)
+            if (res && res.statuscode === 200) {
+                setSuccessMessage("read later book remove susseccfully")
                 setLoading(false)
+                setReadLaterbookData(prevBooks => prevBooks.filter(book => book._id !== readLaterBookId));
                 setTimeout(() => {
                     setSuccessMessage(null)
                 }, 2000);
                 toggleModal()
+            } else {
+                setSuccessMessage("Unexpected error occurred");
+                setTimeout(() => {
+                    setSuccessMessage(null)
+                }, 2000);
             }
-        } catch (err) {
+
+        } catch (error) {
             setLoading(false)
-            console.error('Review Fetch Error:', err);
+            setSuccessMessage("Unexpected error occurred");
+            setTimeout(() => {
+                setSuccessMessage(null)
+            }, 2000);
+            console.error('Delete Book Error:', error);
+        }
+    };
+
+
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Preview image before uploading
+        const imageUrl = URL.createObjectURL(file);
+        setProfileImage(imageUrl); // Set preview image
+
+        // Upload the image
+        handleImageUpload(file);
+    };
+
+    const handleImageUpload = async (file) => {
+        setLoading(true);
+        let uploadEndpoint = `${baseUrl}/api/v1/profileImage/uploadProfileImage/${userIdForImageChange}`;
+
+        const formData = new FormData();
+        formData.append("profileImage", file);
+
+
+        try {
+            const res = await postApiImageData(uploadEndpoint, formData,
+                {
+                    withCredentials: true
+                },
+            )
+
+            setLoading(false)
+            if (res && res.statuscode === 201) {
+                setSuccessMessage("Image uploaded successfully!");
+                setProfileImage(res.data.image);
+                setTimeout(() => {
+                    setSuccessMessage("");
+                }, 2000);
+            }
+        } catch (error) {
+            setLoading(false)
+            console.log("error", error)
         }
     };
 
@@ -290,7 +356,26 @@ const UserProfile = () => {
             }
             <h1>My Profile</h1>
             <div className="user-profile-card">
-                <img src="/images/author-image.png" alt="User Profile" className="user-profile-image" />
+                <div className="user-profile-image-container">
+                    {/* Hidden file input */}
+                    <input
+                        type="file"
+                        id="profile-upload"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        style={{ display: "none" }}
+                    />
+
+                    {/* Clickable Profile Image */}
+                    <label htmlFor="profile-upload">
+                        <img
+                            src={profileImage || "/images/author-image.png"}
+                            alt="User Profile"
+                            className="user-profile-image"
+                            style={{ cursor: "pointer" }}
+                        />
+                    </label>
+                </div>
 
                 {!isEditing ? (
                     <div className="user-profile-info">
@@ -341,7 +426,14 @@ const UserProfile = () => {
                 )}
 
             </div>
-            <div className="my-book">
+            <div className="nav-link">
+                <ul>
+                    {/* Use normal anchor links instead of NavLink for internal page navigation */}
+                    <li> <a href="#my-Book">My Book</a> </li>
+                    <li> <a href="#read-later">Read Later Book</a> </li>
+                </ul>
+            </div>
+            <div className="my-book" id="my-Book">
                 <h1>my book</h1>
                 <div className="user-book">
                     <div className='book-Container'>
@@ -376,7 +468,7 @@ const UserProfile = () => {
                     </div>
                 </div>
             </div>
-            <div className="ReadLater-book">
+            <div className="ReadLater-book" id="read-later">
                 <h1>read later book</h1>
                 <div className='book-Container'>
                     {
@@ -409,8 +501,6 @@ const UserProfile = () => {
                             :
                             <p>No books available</p>
                     }
-                </div>
-                <div className="user-book">
                 </div>
 
                 <BookReviewModal

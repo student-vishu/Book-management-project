@@ -4,6 +4,8 @@ import TopViewBook from '../commonComponet/TopViewBook';
 import useApiUrl from '../commonComponet/useApiUrl';
 import BookReviewModal from '../commonComponet/BookReviewModal';
 import TopAuthorBook from '../commonComponet/TopAuthorBook'
+import { getApiData } from '../../config';
+import BookAndUserNo from '../commonComponet/BookAndUserNo';
 
 const Home = () => {
     const baseUrl = useApiUrl();
@@ -13,18 +15,25 @@ const Home = () => {
     const [selectedBook, setSelectedBook] = useState(null);
     const [userReview, setUserReview] = useState(null);
     const [userData, setUserData] = useState(null);
+    const [userNoData, setUserNoData] = useState(0)
+    const [bookNoData, setBookNoData] = useState(0)
 
 
     useEffect(() => {
-        getBookData()
+        fetchBooks()
         const user = JSON.parse(localStorage?.getItem("userLogin")) || JSON.parse(localStorage?.getItem("userAdminLogin")) || null;
         setUserData(user._id)
+    }, [!modalOpen])
+
+    useEffect(() => {
+        fetchBookNo()
+        fetchUserNo()
     }, [])
 
     const toggalModal = (book) => {
         setUserReview(null)
         if (book) {
-            getBookUserReviw(book?._id);
+            fetchBookReview(book?._id);
             setSelectedBook(book);
         }
         setModalOpen(!modalOpen)
@@ -32,67 +41,100 @@ const Home = () => {
     }
 
 
-    const getBookUserReviw = async (bookId) => {
-        if (!bookId) {
-            console.error("❌ Error: bookId is missing in API call!");
-            return;
-        }
+    const fetchBookReview = async (bookId) => {
+        if (bookId) {
+            try {
+                const res = await getApiData(`${baseUrl}/api/v1/review/${bookId}`)
 
-        try {
-            const response = await fetch(`${baseUrl}/api/v1/review/${bookId}`);
-
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
-            }
-
-            const responseData = await response.json();
-
-            // console.log(responseData.data)
-            // console.log(userData)
-
-            if (responseData?.data && userData) {
-                const review = responseData.data.review;
-                const userReview = review?.find((item) => userData === item?.user._id);
-
-                if (userReview) {
-                    setUserReview({
-                        rating: userReview.rating,
-                        reviewText: userReview.comment
-                    });
+                if (res && res.statuscode === 200) {
+                    if (res && res.data && res.data.review) {
+                        const userReview = res.data?.review.find((r) => r.user._id === userData)
+                        if (userReview) {
+                            // console.log("review",userReview )
+                            setUserReview({
+                                rating: userReview.rating,
+                                reviewText: userReview.comment,
+                            })
+                        }
+                    }
+                } else {
+                    console.error('Failed to fetch books review');
                 }
-            }
 
-            // console.log("Book Reviews:", responseData);
-            return responseData;
-        } catch (error) {
-            console.error("Error fetching book review:", error.message);
+            } catch (error) {
+                console.error('Review Fetch Error:', error);
+            }
+        } else {
+            console.error("❌ Error: bookId is missing in API call!");
+
         }
     };
 
 
-
-    const getBookData = async () => {
+    const fetchBooks = async () => {
         try {
-            const response = await fetch(`${baseUrl}/api/v1/books/getAllBooks`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include"
+            const res = await getApiData(`${baseUrl}/api/v1/books/getAllBooks`, {
+                withCredentials: true,
             });
 
-            if (!response.ok) {
-                console.error("API Error:", response.status, response.statusText);
-                return;
+            if (res && res?.statuscode === 200) {
+                if (res && res?.data) {
+                    setBookData(res?.data || []);
+                }
+            } else {
+                console.error('Failed to fetch books');
             }
 
-            const Bookdata = await response.json();
-            setBookData(Bookdata?.data)
-
         } catch (error) {
-            console.error("Fetch Error:", error);
+            console.error('Fetch Error:', error);
         }
     };
+
+    const fetchUserNo = async () => {
+        try {
+
+            const res = await getApiData(`${baseUrl}/api/v1/users/getUserCount`, {
+                withCredentials: true
+            })
+
+            if (res && res.statuscode === 200) {
+                if (res.data && res.data.userCount) {
+                    setUserNoData(res.data.userCount)
+                }
+            } else {
+                console.error("Falid user count")
+
+            }
+
+        } catch (error) {
+            console.error("Error user count", error)
+        }
+
+    }
+    const fetchBookNo = async () => {
+        try {
+
+            const res = await getApiData(` ${baseUrl}/api/v1/users/getBookCount`, {
+                withCredentials: true
+            })
+
+            if (res && res.statuscode === 200) {
+                if (res.data && res.data.bookCount) {
+                    setBookNoData(res.data.bookCount)
+                }
+            } else {
+                console.error("Falid user count")
+
+            }
+
+        } catch (error) {
+            console.error("Error user count", error)
+        }
+
+    }
+
+
+
 
     return (
         <>
@@ -110,10 +152,14 @@ const Home = () => {
             </section>
 
             <section className='top-view-book-display'>
+
                 <TopViewBook
                     bookData={bookData}
                     toggalModal={toggalModal}
                 />
+            </section>
+            <section className='our_value_section'>
+                <BookAndUserNo userNoData={userNoData} bookNoData={bookNoData} />
             </section>
             <section className='top-author-book'>
                 <TopAuthorBook bookData={bookData} />

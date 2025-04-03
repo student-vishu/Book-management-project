@@ -54,6 +54,26 @@
     padding: 8px 12px;
 }
 
+.Admin-logout-btn {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 400;
+    text-transform: capitalize;
+    text-decoration: none;
+    padding: 8px 12px;
+    background-color: transparent;
+    overflow: hidden;
+    cursor: pointer;
+    border: none;
+}
+
+.Admin-logout-btn:hover {
+    border-bottom: 2px solid yellow;
+    padding-bottom: 4px;
+    color: yellow;
+    font-weight: 600;
+}
+
 .nav-link ul li a:hover,
 .nav-link ul li .active {
     border-bottom: 2px solid #fff;

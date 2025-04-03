@@ -6,7 +6,6 @@ import "../../../styles/Layout.css";
 import Library from '../../pages/Library.jsx';
 import Registration from '../../pages/Registration.jsx';
 import Protected from './Protected.js';
-import Logout from '../Logout.js';
 import BookDisplay from '../../pages/BookDisplay.jsx';
 import UserAuthentication from './UserAuthentication.js';
 import AdminDashboard from "../../../admin/Pages/AdminDashboard.jsx"
@@ -15,8 +14,7 @@ import ManageBooks from '../../../admin/Pages/ManageBooks.jsx';
 import Profile from '../../../admin/Pages/Profile.jsx';
 import AddBook from '../../pages/AddBook.jsx';
 import UserProfile from '../../pages/UserProfile.jsx';
-
-
+import UpdateBook from '../../pages/UpdateBook.jsx';
 
 
 const Layout = () => {
@@ -34,6 +32,7 @@ const Layout = () => {
                     <Route path='/BookDisplay' element={<Protected Componet={BookDisplay} />} />
                     <Route path='/BookDisplay/bookId=:id' element={<Protected Componet={BookDisplay} />} />
                     <Route path='/AddBook' element={<Protected Componet={AddBook} />} />
+                    <Route path='/UpdateBook' element={<Protected Componet={UpdateBook} />} />
                     <Route path='/UserProfile' element={<Protected Componet={UserProfile} />} />
                     {/* admin */}
                     <Route path='/admin-dashboard' element={<Protected AdminComponet={AdminDashboard} />} />
@@ -42,6 +41,7 @@ const Layout = () => {
                     <Route path='/Profile' element={<Protected AdminComponet={Profile} />} />
 
                 </Routes>
+          
             </BrowserRouter>
         </div>
     )

@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router';
 import Header from '../header/Header';
 import useApiUrl from '../useApiUrl';
-import AdminHeader from '../header/AdminHeader';
+import AdminHeader from '../../../admin/component/AdminHeader.jsx';
 import "../../../styles/pages_styles/Protected.css"
+import Footer from '../footer/Footer';
 
 const Protected = (props) => {
     const { Componet, AdminComponet } = props;
@@ -49,6 +50,7 @@ const Protected = (props) => {
                     <>
                         <Header />
                         <Componet />
+                        <Footer />
                         <div className='top_arrow_circle' onClick={scrollToTop} >
                             <img src="./images/top-arrow-different.jpg" alt="truck images" width={30} height={30} />
                         </div>

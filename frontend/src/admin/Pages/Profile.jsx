@@ -135,13 +135,13 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile-container">
+    <div className="Admin-profile-container">
       <h1>My Profile</h1>
       <div className="Admin-profile-card">
         {/* Show preview image if selected, otherwise show existing profile image */}
 
-        <label htmlFor="imageUpload" className="upload-image-btn">
-          <img src={selectedImage || profileImage} alt="User Profile" className="profile-image" />
+        <label htmlFor="imageUpload" className="Admin-upload-image-btn">
+          <img src={selectedImage || profileImage} alt="User Profile" className="Admin-profile-image" />
         </label>
         <input
           type="file"
@@ -152,12 +152,12 @@ const Profile = () => {
         />
 
         {!isEditing ? (
-          <div className="profile-info">
+          <div className="Admin-profile-info">
             <h2>{profile.name}</h2>
             <p><strong>Email:</strong> {profile.email}</p>
             <p><strong>Contact No:</strong> {profile.contactNo}</p>
             <p><strong>Role:</strong> {profile.role}</p>
-            <button className="edit-profile-btn" onClick={() => setIsEditing(true)}>
+            <button className="Admin-edit-profile-btn" onClick={() => setIsEditing(true)}>
               Edit Profile
             </button>
           </div>
@@ -169,7 +169,7 @@ const Profile = () => {
             onSubmit={handleUpdateProfile}
           >
             {({ isSubmitting, handleSubmit }) => (
-              <Form onSubmit={handleSubmit} className="profile-edit-form">
+              <Form onSubmit={handleSubmit} className="Admin-profile-edit-form">
                 <label htmlFor="name">Name:</label>
                 <Field type="text" name="name" id="name" />
                 <ErrorMessage name="name" component="span" className="error" />
@@ -182,11 +182,11 @@ const Profile = () => {
                 <Field type="text" name="contactNo" id="contactNo" />
                 <ErrorMessage name="contactNo" component="span" className="error" />
 
-                <div className="form-buttons">
-                  <button type="submit" disabled={isSubmitting} className="save-btn">
+                <div className="Admin-form-buttons">
+                  <button type="submit" disabled={isSubmitting} className="Admin-save-btn">
                     Save Changes
                   </button>
-                  <button type="button" className="cancel-btn" onClick={() => setIsEditing(false)}>
+                  <button type="button" className="Admin-cancel-btn" onClick={() => setIsEditing(false)}>
                     Cancel
                   </button>
                 </div>

@@ -46,7 +46,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
     if (existedUser) {
         return res
-            .status(409)
+            .status(200)
             .json(new ApiResponse(409, "User already exist"))
     }
 
@@ -119,7 +119,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
     if (!user) {
         return res
-            .status(404)
+            .status(200)
             .json(new ApiResponse(404, "User does not exist"))
     }
 
@@ -127,7 +127,7 @@ const loginUser = asyncHandler(async (req, res) => {
     const isPasswordValid = await user.isPasswordCorrect(password)
 
     if (!isPasswordValid) {
-        return res.status(401).json(new ApiResponse(401, "Invalid Password"))
+        return res.status(200).json(new ApiResponse(401, "Invalid Password"))
     }
 
     //create access and refresh token

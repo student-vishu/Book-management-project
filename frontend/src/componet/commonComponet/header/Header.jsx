@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router';
 import useApiUrl from '../useApiUrl';
 import "../../../styles/Header.css";
+import { postApiData, putApiUserProfileUpdate } from '../../../config';
 
 const Header = () => {
     const baseurl = useApiUrl();
@@ -14,6 +15,7 @@ const Header = () => {
     const [errors, setErrors] = useState({});
     const [touched, setTouched] = useState({});
     const [successMessage, setSuccessMessage] = useState(false);
+    const [confirmLogout, setConfirmLogout] = useState(false)
 
     const [user, setUser] = useState(null);
 
@@ -92,20 +94,36 @@ const Header = () => {
 
     const userLogout = async () => {
         localStorage.clear();
+        if (confirmLogout) {
+            setConfirmLogout(false)
+            setShowConfirmPopup(false);
+        }
         navigate('/Login');
         try {
-            const response = await fetch(`${baseurl}/api/v1/users/logout`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' }
+            const response = await postApiData(`${baseurl}/api/v1/users/logout`, {}, {
+                withCredentials: true
             });
-            const result = await response.json();
-            if (result.statuscode === 200) navigate('/Login');
-            else alert('Logout failed, please try again.');
+            if (response.statuscode === 200) {
+                navigate('/Login');
+            }
+            else {
+                alert('Logout failed, please try again.');
+            }
         } catch (error) {
             console.error('Logout Error:', error);
         }
     };
+
+    const cheakUserActivity = () => {
+        const userBook = localStorage?.getItem("userBookData") || null
+        const userUpdateBook = localStorage?.getItem("userUpdateBookData") || null
+        if (userBook || userUpdateBook) {
+            setShowConfirmPopup(true);
+            setConfirmLogout(true)
+        } else {
+            userLogout();
+        }
+    }
 
     const handleProfileUpdate = async () => {
         const validationErrors = validate(updateUser);
@@ -116,20 +134,18 @@ const Header = () => {
             return; // Don't proceed if errors exist
         }
 
+        const updateUserData = {
+            email: updateUser.email,
+            contactNo: updateUser.contact
+        }
+
         try {
-            const response = await fetch(`${baseurl}/api/v1/users/updateUserProfile/${user.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: updateUser.email,
-                    contactNo: updateUser.contact
-                }),
-                credentials: "include"
+            const response = await putApiUserProfileUpdate(`${baseurl}/api/v1/users/updateUserProfile/${user.id}`, updateUserData, {
+                withCredentials: true
             });
 
-            const result = await response.json();
-            if (result.statuscode === 200) {
-                console.log("data", result)
+            if (response.statuscode === 200) {
+                console.log("data", response)
                 setSuccessMessage(true)
                 setUser(updateUser);
                 setUserProfileUpdate(false);
@@ -137,8 +153,8 @@ const Header = () => {
                 setTimeout(() => {
                     setSuccessMessage(false)
                 }, 2000);
-                getInitial(result.data.name)
-                localStorage.setItem("userLogin", JSON.stringify(result.data))
+                getInitial(response.data.name)
+                localStorage.setItem("userLogin", JSON.stringify(response.data))
             } else {
                 alert("Failed to update profile.");
             }
@@ -190,8 +206,16 @@ const Header = () => {
                         <li><NavLink to={"/library"}>Library</NavLink></li>
                         <li><NavLink to={"/BookDisplay"}>Books</NavLink></li>
                         <li><NavLink to={"/AddBook"}>AddBook</NavLink></li>
-                        {location.pathname === "/UserProfile" || userAdminLogin ?
-                            <li > <NavLink to={"/UserProfile"}>Profile</NavLink></li> : null}
+                        {localStorage?.getItem("userUpdateBookData") &&
+                            (<li><NavLink to={"/UpdateBook"}>UpdateBook</NavLink></li>)
+                        }
+
+
+                        {location.pathname === "/UserProfile" && !userAdminLogin ?
+                            <li > <NavLink to={"/UserProfile"}>Profile</NavLink></li>
+                            : null}
+
+
                         {userAdminLogin && (
                             <li><NavLink to={"/admin-dashboard"}>Admin</NavLink></li>
                         )}
@@ -250,7 +274,7 @@ const Header = () => {
 
 
                                 <div className='user-profile-update'>
-                                    <button type='button' onClick={userLogout} className="user-logout">logout</button>
+                                    <button type='button' onClick={cheakUserActivity} className="user-logout">logout</button>
                                     {userProfileUpdate ? (
                                         <button type='button' onClick={handleCancelUpdate} className="close-profile">Cancel</button>
                                     ) : (
@@ -287,9 +311,18 @@ const Header = () => {
                 showConfirmPopup && !userAdminLogin && (
                     <div className="confirm-popup">
                         <div className="confirm-box">
-                            <p>Are you sure you want to update your profile?</p>
+                            {confirmLogout ?
+                                <p>Do you wish to log out now that you have written but not submitted a book?</p>
+                                :
+                                <p>Are you sure you want to update your profile?</p>
+                            }
                             <div className="confirm-buttons">
-                                <button onClick={handleProfileUpdate} className="confirm-yes">Yes</button>
+                                {
+                                    confirmLogout ?
+                                        <button onClick={userLogout} className="confirm-yes">Yes</button>
+                                        :
+                                        <button onClick={handleProfileUpdate} className="confirm-yes">Yes</button>
+                                }
                                 <button onClick={handleCancelUpdate} className="confirm-no">No</button>
                             </div>
                         </div>

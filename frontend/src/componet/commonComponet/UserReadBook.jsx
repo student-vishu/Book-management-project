@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/UserReadBook.css';
 import useApiUrl from './useApiUrl';
+import Loader from './Loader';
+import { getApiData } from '../../config';
 
 // const splitDescriptionIntoPages = (desc, maxLength = 969) => {
 //     const sentences = desc.match(/[^.!?]+[.!?]+(\s+|$)/g) || [desc]; // sentence-based split
@@ -68,43 +70,40 @@ const UserReadBook = (props) => {
     const [flippedPages, setFlippedPages] = useState([]);
     const [flippingPage, setFlippingPage] = useState(null); // NEW
     const [bookData, setbookData] = useState({})
+    const [Loading, setLoading] = useState(false)
 
     const baseUrl = useApiUrl();
     const { bookId } = props
     // console.log(bookId)
-    const getBookData = async (bookId) => {
-        try {
-            const response = await fetch(`${baseUrl}/api/v1/books/getBookById?_id=${bookId}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                // credentials: "include" // Important for cookies and sessions
-            });
 
-            if (!response.ok) {
-                console.error("API Error:", response.status, response.statusText);
-                return;
+    const fetchBooks = async (bookId) => {
+        setLoading(true)
+        try {
+            const res = await getApiData(`${baseUrl}/api/v1/books/getBookById?_id=${bookId}`, {
+                withCredentials: true,
+            });
+            setLoading(false)
+
+            if (res && res?.statuscode === 200) {
+                if (res && res?.data) {
+                    setbookData(res?.data || []);
+                }
+            } else {
+                console.error('Failed to fetch books');
             }
 
-            const Bookdata = await response.json();
-            // console.log("JSON Data:", Bookdata);
-            setbookData(Bookdata.data)
-            // console.log(bookData);
-            
-
         } catch (error) {
-            console.error("Fetch Error:", error);
+            setLoading(false)
+            console.error('Fetch Error:', error);
         }
+    };
 
-    }
-    
 
     useEffect(() => {
 
         // console.log(bookId)
         if (bookId) {
-            getBookData(bookId)
+            fetchBooks(bookId)
         }
 
     }, [bookId])
@@ -240,6 +239,12 @@ const UserReadBook = (props) => {
                     <i className="fa fa-arrow-circle-right"></i>
                 </button>
             </div>
+
+            {
+                Loading ?
+                    <Loader />
+                    : null
+            }
         </div>
     );
 };

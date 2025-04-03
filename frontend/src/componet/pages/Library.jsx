@@ -3,6 +3,7 @@ import TopViewBook from '../commonComponet/TopViewBook';
 import useApiUrl from '../commonComponet/useApiUrl';
 import BookReviewModal from '../commonComponet/BookReviewModal';
 import '../../styles/pages_styles/Library.css';
+import { getApiData } from '../../config';
 
 const Library = () => {
     const baseUrl = useApiUrl();
@@ -26,24 +27,28 @@ const Library = () => {
             JSON.parse(localStorage.getItem('userLogin')) ||
             JSON.parse(localStorage.getItem('userAdminLogin')) || null;
         setUserData(user?._id || null); // Ensure userData is set properly
-    }, [modalOpen === false]);
+    }, [!modalOpen]);
 
 
     const fetchBooks = async () => {
+
         try {
-            const res = await fetch(`${baseUrl}/api/v1/books/getAllBooks`, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
+            const res = await getApiData(`${baseUrl}/api/v1/books/getAllBooks`, {
+                withCredentials: true,
             });
-            if (!res.ok) throw new Error('Failed to fetch books');
-            const data = await res.json();
-            setBookData(data?.data || []);
-            setFilteredBooks(data?.data || []);
-        } catch (err) {
-            console.error('Fetch Error:', err);
+
+            if (res && res?.statuscode === 200) {
+                setBookData(res?.data || []);
+                setFilteredBooks(res?.data || []);
+            } else {
+                console.error('Failed to fetch books');
+            }
+
+        } catch (error) {
+            console.error('Fetch Error:', error);
         }
     };
+
 
     const uniqueAuthors = [...new Set(bookData.map(book => book.author))];
 
@@ -108,26 +113,34 @@ const Library = () => {
         }
         setModalOpen(!modalOpen);
     };
+
+
     const fetchBookReview = async (bookId) => {
-        if (!bookId || !userData) return; // Check if userData is null or undefined
+        if (bookId) {
+            try {
+                const res = await getApiData(`${baseUrl}/api/v1/review/${bookId}`)
 
-        try {
-            const res = await fetch(`${baseUrl}/api/v1/review/${bookId}`);
-            // if (!res.ok) throw new Error('Failed to fetch review');
-            const data = await res.json();
+                if (res && res.statuscode === 200) {
+                    if (res && res.data && res.data.review) {
+                        const userReview = res.data?.review.find((r) => r.user._id === userData)
+                        if (userReview) {
+                            setUserReview({
+                                rating: userReview.rating,
+                                reviewText: userReview.comment,
+                            })
+                        }
+                    }
+                } else {
+                    console.error('Failed to fetch books review');
+                }
 
-            const userReview = data?.data?.review?.find(r => r.user._id === userData) || "";
-            if (userReview) {
-                setUserReview({
-                    rating: userReview.rating,
-                    reviewText: userReview.comment,
-                });
+            } catch (error) {
+                console.error('Review Fetch Error:', error);
             }
-        } catch (err) {
-            console.error('Review Fetch Error:', err);
+        } else {
+            console.error("❌ Error: bookId is missing in API call!");
         }
     };
-
 
     return (
         <div>

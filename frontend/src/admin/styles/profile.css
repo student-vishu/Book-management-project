@@ -7,20 +7,19 @@
 }
 
 /* Profile Page Container */
-.profile-container {
+.Admin-profile-container {
   text-align: center;
   background: linear-gradient(135deg, #667eea, #764ba2);
   min-height: 100vh;
-  padding: 50px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: -10%;
+  padding: 50px 20px;
 }
 
 /* Profile Title */
-.profile-container h1 {
+.Admin-profile-container h1 {
   font-size: 2.2rem;
   font-weight: bold;
   color: white;
@@ -38,14 +37,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Center all child elements */
-  justify-content: center;
-  /* Center vertically */
   transition: 0.3s ease-in-out;
 }
 
 /* Profile Image */
-.profile-image {
+.Admin-profile-image {
   width: 140px;
   height: 140px;
   border-radius: 50%;
@@ -55,30 +51,16 @@
   transition: transform 0.3s;
 }
 
-.profile-image:hover {
+.Admin-profile-image:hover {
   transform: scale(1.05);
 }
 
 /* Upload Image Button */
-.upload-image-btn {
-  /* background: linear-gradient(135deg, #667eea, #764ba2); */
-  color: white;
-  border: none;
-  border-radius: 50%;
+.Admin-upload-image-btn {
   cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  transition: background 0.3s, transform 0.2s;
-  margin: 0;
-  padding: 0;
-  width: 25%;
-  object-fit: fill;
-  height: 100%;
-}
-
-.upload-image-btn:hover {
-  transform: scale(1.05);
-  /* background: linear-gradient(135deg, #5a67d8, #6b46c1); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Hide default file input */
@@ -87,42 +69,29 @@
 }
 
 /* Profile Information */
-/* Profile Card */
-
-
-/* Profile Information */
-.profile-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* Center text content */
-  justify-content: center;
-  /* Center within the card */
+.Admin-profile-info {
   text-align: center;
-  width: 100%;
-  max-width: 400px;
-  margin-top: 10px;
 }
 
-.profile-info h2 {
+.Admin-profile-info h2 {
   font-size: 1.8rem;
   font-weight: bold;
   color: #222;
   margin-bottom: 10px;
 }
 
-.profile-info p {
+.Admin-profile-info p {
   font-size: 1rem;
   color: #555;
   margin-bottom: 5px;
 }
 
-.profile-info p strong {
+.Admin-profile-info p strong {
   color: #764ba2;
 }
 
 /* Edit Profile Button */
-.edit-profile-btn {
+.Admin-edit-profile-btn {
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
   padding: 12px 20px;
@@ -137,13 +106,13 @@
   max-width: 200px;
 }
 
-.edit-profile-btn:hover {
+.Admin-edit-profile-btn:hover {
   transform: scale(1.05);
   background: linear-gradient(135deg, #5a67d8, #6b46c1);
 }
 
-/* Edit Profile Form Styles */
-.profile-edit-form {
+/* Edit Profile Form */
+.Admin-profile-edit-form {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -155,13 +124,12 @@
   max-width: 400px;
 }
 
-.profile-edit-form label {
+.Admin-profile-edit-form label {
   font-weight: bold;
   color: #333;
-  text-align: left;
 }
 
-.profile-edit-form input {
+.Admin-profile-edit-form input {
   width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
@@ -170,120 +138,103 @@
   transition: border-color 0.3s ease;
 }
 
-.profile-edit-form input:focus {
+.Admin-profile-edit-form input:focus {
   border-color: #667eea;
   outline: none;
 }
 
-.profile-edit-form .error {
+.Admin-profile-edit-form .error {
   color: red;
   font-size: 14px;
 }
 
 /* Buttons Container */
-.form-buttons {
+.Admin-form-buttons {
   display: flex;
   justify-content: space-between;
   gap: 10px;
   margin-top: 15px;
 }
 
-.save-btn,
-.cancel-btn {
+.Admin-save-btn, .Admin-cancel-btn {
   flex: 1;
   padding: 12px;
   font-size: 16px;
   cursor: pointer;
   border-radius: 25px;
-  transition: background 0.3s ease, transform 0.2s;
   text-align: center;
   border: none;
 }
 
-.save-btn {
+.Admin-save-btn {
   background: #28a745;
   color: white;
 }
 
-.save-btn:hover {
+.Admin-save-btn:hover {
   transform: scale(1.05);
   background: #218838;
 }
 
-.cancel-btn {
+.Admin-cancel-btn {
   background: #dc3545;
   color: white;
 }
 
-.cancel-btn:hover {
+.Admin-cancel-btn:hover {
   transform: scale(1.05);
   background: #c82333;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .profile-container h1 {
+  .Admin-profile-container h1 {
     font-size: 1.8rem;
   }
-
-  .profile-card {
-    width: 100%;
+  .Admin-profile-card {
     padding: 20px;
   }
-
-  .profile-image {
+  .Admin-profile-image {
     width: 120px;
     height: 120px;
   }
-
-  .profile-info h2 {
+  .Admin-profile-info h2 {
     font-size: 1.5rem;
   }
-
-  .profile-info p {
+  .Admin-profile-info p {
     font-size: 1rem;
   }
-
-  .edit-profile-btn {
+  .Admin-edit-profile-btn {
     font-size: 0.95rem;
     padding: 10px 18px;
   }
 }
 
 @media (max-width: 480px) {
-  .profile-container h1 {
+  .Admin-profile-container h1 {
     font-size: 1.6rem;
   }
-
-  .profile-card {
-    width: 100%;
+  .Admin-profile-card {
     padding: 15px;
   }
-
-  .profile-image {
+  .Admin-profile-image {
     width: 100px;
     height: 100px;
   }
-
-  .profile-info h2 {
+  .Admin-profile-info h2 {
     font-size: 1.3rem;
   }
-
-  .profile-info p {
+  .Admin-profile-info p {
     font-size: 0.9rem;
   }
-
-  .edit-profile-btn {
+  .Admin-edit-profile-btn {
     font-size: 0.85rem;
     padding: 8px 15px;
   }
-
-  .form-buttons {
+  .Admin-form-buttons {
     flex-direction: column;
   }
-
-  .save-btn,
-  .cancel-btn {
+  .Admin-save-btn, .Admin-cancel-btn {
     width: 100%;
   }
 }

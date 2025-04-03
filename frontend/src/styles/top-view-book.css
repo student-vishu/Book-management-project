@@ -3,6 +3,15 @@
 }
 
 /* Container for shimmer loader */
+.topBook_Display .slider-container .slick-slide .lodar p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-family: "Arvo", serif;
+    font-weight: 700;
+    font-style: normal;
+}
 
 .topBook_Display .slider-container .slick-slide .lodar {
     height: 420px;

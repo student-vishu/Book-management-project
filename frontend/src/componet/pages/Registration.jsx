@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 import * as Yup from 'yup';
 import "../../styles/pages_styles/Registration.css";
 import useApiUrl from "../commonComponet/useApiUrl.js";
+import { postApiData } from "../../config.js";
+import Loader from "../commonComponet/Loader.jsx";
 
 
 const registrationDetails = [
@@ -49,6 +51,7 @@ const Registration = () => {
     const [bookCoverOpen, setBookCoverOpen] = useState(false);
     const [backBookCoverOpen, setBackBookCoverOpen] = useState(false);
     const [userInfo, setUserInfo] = useState([]);
+    const [showLoader, setShowLoader] = useState(false)
 
     const navigate = useNavigate();
 
@@ -113,6 +116,39 @@ const Registration = () => {
         return autoCompleteValues[fieldName] || "off";
     };
 
+    const postRegistration = async (fromData, values) => {
+        setShowLoader(true);
+        try {
+
+            const res = await postApiData(`${baseUrl}/api/v1/users/register`, fromData, {
+                withCredentials: true
+            })
+            setShowLoader(false)
+
+            if (res && res.statuscode === 200) {
+                const autoLogin = {
+                    email: values?.userEmail,
+                    password: values?.userPassword,
+                }
+
+                localStorage.setItem("userRagistretion", JSON.stringify(autoLogin))
+                setTimeout(() => {
+
+                    navigate(`/Login`);
+                }, 400);
+            } else if (res.statuscode === 409) {
+                localStorage.setItem("userExistError", JSON.stringify("You have already registered, please log in using email or contact & password."));
+                navigate(`/Login`);
+            }
+            else {
+                console.error("Faild to Registration")
+            }
+
+        } catch (error) {
+            setShowLoader(false)
+            console.error("Error to Registration", error)
+        }
+    }
 
     return (
         <div className="ragistrtion-book">
@@ -138,38 +174,11 @@ const Registration = () => {
                             address: values?.userAddress,
                         };
 
-                        const userData = JSON.stringify(fromData)
-                        // console.log("data base store Data:", userData);
-
-                        if (userData) {
-                            const response = await fetch(`${baseUrl}/api/v1/users/register`, {
-                                method: "post",
-                                body: userData,
-                                headers: {
-                                    'content-Type': 'application/json'
-                                }
-                            })
-                            const responseData = await response.json();
-                            console.log("response", responseData)
-                            if (responseData.statuscode === 200) {
-
-                                const autoLogin = {
-                                    email: values?.userEmail,
-                                    password: values?.userPassword,
-                                }
-
-                                localStorage.setItem("userRagistretion", JSON.stringify(autoLogin))
-                                setTimeout(() => {
-
-                                    navigate(`/Login`);
-                                }, 400);
-                            }
-                            if (responseData.statuscode === 409) {
-                                localStorage.setItem("userExistError", JSON.stringify("You have already registered, please log in using email or contact & password."));
-                                navigate(`/Login`);
-                            }
+                        if (fromData) {
+                            postRegistration(fromData, values)
+                        } else {
+                            console.error("Form data is required")
                         }
-
                     }
                 }
             >
@@ -309,6 +318,12 @@ const Registration = () => {
                     </Form>
                 )}
             </Formik>
+
+            {
+                showLoader ?
+                    <Loader />
+                    : null
+            }
         </div >
     );
 };

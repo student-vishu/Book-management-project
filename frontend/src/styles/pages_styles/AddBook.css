@@ -54,12 +54,34 @@
     max-width: 100%;
     border-radius: 8px;
     border: 1px solid #ccc;
+    height: 300px;
 }
 
+.add-book-container .book-form .denger {
+    background: #f53232;
+}
+
+.add-book-container .book-form .denger:hover {
+
+    background: #f30404;
+}
+
+.add-book-container .book-form .btn :first-child {
+    background: #4a90e2;
+}
+
+
+.add-book-container .book-form .btn {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row-reverse;
+}
 .add-book-container .book-form button {
+    opacity: 1;
     width: 100%;
     padding: 12px;
-    background: #4a90e2;
     color: white;
     font-size: 16px;
     border: none;
@@ -69,7 +91,7 @@
     text-transform: capitalize;
 }
 
-.add-book-container .book-form button:hover {
+.add-book-container .book-form .btn :first-child:hover {
     background: #357ABD;
 }
 

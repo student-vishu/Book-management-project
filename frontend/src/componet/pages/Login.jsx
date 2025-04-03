@@ -5,6 +5,8 @@ import * as yup from "yup";
 import "../../styles/pages_styles/Login.css";
 import ForgetPasswordModal from "../commonComponet/ForgetPasswordModal";
 import useApiUrl from "../commonComponet/useApiUrl.js";
+import { postApiData } from "../../config.js";
+import Loader from "../commonComponet/Loader.jsx";
 
 
 const validationSchema = yup.object().shape({
@@ -37,7 +39,8 @@ const Login = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [changePasswordConform, setChangePasswordConform] = useState(false);
     const [autoLoginData, setAutoLoginData] = useState(null);
-    const [passwordShow, setPasswordShow] = useState(false)
+    const [passwordShow, setPasswordShow] = useState(false);
+    const [showLoader, setShowLoader] = useState(false)
 
 
     const [message, setMessage] = useState(null);
@@ -67,27 +70,12 @@ const Login = () => {
             email: userRagistretionData?.email,
             password: userRagistretionData?.password
         }
+        setAutoLoginData(userLoginData)
 
-        const loginData = JSON.stringify(userLoginData);
-
-        const response = await fetch(`${baseUrl}/api/v1/users/login`, {
-            method: "post",
-            body: loginData,
-            headers: {
-                'content-Type': 'application/json'
-            },
-            credentials: "include"
-        })
-
-        const responeData = await response.json()
-
-        if (responeData.statuscode === 200) {
-            setAutoLoginData(responeData.data)
-            localStorage.clear()
-            localStorage.setItem("userLogin", JSON.stringify(responeData.data.user))
-            navigate("/Book-Management")
+        if (userLoginData) {
+            postUserLogin(userLoginData)
         } else {
-            alert("somting went worng")
+            console.error("login data is required")
         }
     }
 
@@ -118,50 +106,10 @@ const Login = () => {
                     contactNo: data?.userContact
                 }
 
-                const loginData = JSON.stringify(userLoginData);
-
-                const response = await fetch(`${baseUrl}/api/v1/users/login`, {
-                    method: "post",
-                    body: loginData,
-                    headers: {
-                        'content-Type': 'application/json'
-                    },
-                    credentials: "include"
-                })
-
-                const responeData = await response.json()
-                // console.log(responeData.statuscode)
-
-
-                if (responeData.statuscode === 200) {
-                    // console.log("response", responeData.data.user);
-                    localStorage.setItem("userLogin", JSON.stringify(responeData.data.user))
-
-                    navigate("/Book-Management")
-                }
-
-
-
-                //   Check if user is admin
-                if (responeData.data.user.role === "admin") {
-                    navigate("/admin-dashboard");  // Redirect admin to admin panel
+                if (userLoginData) {
+                    postUserLogin(userLoginData, resetForm)
                 } else {
-                    navigate("/Book-Management");  // Redirect regular users
-                }
-
-
-                if (responeData.statuscode === 404) {
-                    setUserNotExists(true)
-                    setTimeout(() => {
-                        setUserNotExists(false)
-                    }, 4000);
-                    resetForm()
-                } else if (responeData.statuscode === 401) {
-                    setDisplayError(true)
-                    setTimeout(() => {
-                        setDisplayError(false)
-                    }, 4000);
-                    resetForm()
+                    console.error("login data is required")
                 }
 
                 setIsSubmittingForm(true)
@@ -172,57 +120,71 @@ const Login = () => {
                     email: data?.userEmail,
                     password: data?.userPassword
                 }
-                const loginData = JSON.stringify(userLoginData);
 
-
-                const response = await fetch(`${baseUrl}/api/v1/users/login`, {
-                    method: "post",
-                    body: loginData,
-                    headers: {
-                        'content-Type': 'application/json'
-                    },
-                    credentials: "include"
-                })
-
-                const responeData = await response.json()
-
-                if (responeData.statuscode === 202) {
-
-                    localStorage.setItem("userAdimnLogin", JSON.stringify(responeData.data.user))
-                    navigate("/admin")
+                if (userLoginData) {
+                    postUserLogin(userLoginData, resetForm)
+                } else {
+                    console.error("login data is required")
                 }
-
-                if (responeData.statuscode === 200) {
-
-                    // Check if user is admin
-                    if (responeData.data.user.role === "admin") {
-                        localStorage.setItem("userAdminLogin", JSON.stringify(responeData.data.user))
-                        navigate("/admin-dashboard");  // Redirect admin to admin panel
-                    }
-                    else {
-                        localStorage.setItem("userLogin", JSON.stringify(responeData.data.user))
-                        navigate("/Book-Management")
-                    }
-
-                } else if (responeData.statuscode === 404) {
-                    setUserNotExists(true)
-                    setTimeout(() => {
-                        setUserNotExists(false)
-                    }, 4000);
-                    resetForm()
-                } else if (responeData.statuscode === 401) {
-                    setDisplayError(true)
-                    setTimeout(() => {
-                        setDisplayError(false)
-                    }, 4000);
-                    resetForm()
-                }
-
             }
 
         }
     }
 
+
+    const postUserLogin = async (loginData, resetForm) => {
+        setShowLoader(true)
+        try {
+            const res = await postApiData(`${baseUrl}/api/v1/users/login`, loginData, {
+                withCredentials: true
+            })
+
+            setShowLoader(false)
+            if (res && res.statuscode === 200) {
+                localStorage.clear()
+                if (res && res.data.user.role) {
+
+                    if (res.data.user.role === "admin") {
+                        localStorage.setItem("userAdminLogin", JSON.stringify(res.data.user))
+                        navigate("/admin-dashboard");  // Redirect admin to admin panel
+                    } else {
+                        localStorage.setItem("userLogin", JSON.stringify(res.data.user))
+                        navigate("/Book-Management");  // Redirect regular users
+                    }
+                } else {
+                    console.error("user role is not exeist")
+                }
+
+            } else if (res.statuscode === 404) {
+                setUserNotExists(true)
+                setTimeout(() => {
+                    setUserNotExists(false)
+                }, 4000);
+                if (resetForm) {
+                    resetForm()
+                }
+            } else if (res.statuscode === 401) {
+                setDisplayError(true)
+                setTimeout(() => {
+                    setDisplayError(false)
+                }, 4000);
+                if (resetForm) {
+                    resetForm()
+                }
+            } else {
+                console.error("Falid to user login")
+            }
+
+        } catch (error) {
+            setShowLoader(false)
+            setDisplayError(true)
+            setTimeout(() => {
+                setDisplayError(false)
+            }, 4000);
+            console.error("Falid to featch", error)
+        }
+
+    }
 
 
 
@@ -322,6 +284,11 @@ const Login = () => {
             <div className="form_modal">
                 <ForgetPasswordModal modalOpen={modalOpen} closeModal={closeModal} changePassword={changePassword} />
             </div>
+            {
+                showLoader ?
+                    <Loader />
+                    : null
+            }
         </>
     );
 };

@@ -4,6 +4,7 @@ import "../../styles/ForgetPasswordModal.css"
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as yup from "yup"
 import useApiUrl from './useApiUrl'
+import { postApiData } from '../../config'
 
 const validationSchema = yup.object().shape({
     userContact: yup
@@ -44,31 +45,25 @@ const ForgetPasswordModal = (props) => {
                 contactNo: values?.userContact
             }
 
-            const checkUserData = JSON.stringify(checkUser);
+            try {
 
-            const respone = await fetch(`${baseUrl}/api/v1/users/check-user`, {
-                method: "post",
-                body: checkUserData,
-                headers: {
-                    'content-Type': 'application/json'
+                const respone = await postApiData(`${baseUrl}/api/v1/users/check-user`, checkUser, {
+                    withCredentials: true
+                })
+
+                if (respone.statusCode === 404) {
+                    setUserNotFound(true);
+                    setTimeout(() => {
+                        setUserNotFound(false);
+                    }, 3000);
+                    resetForm();
+                } else {
+                    setGetInput(true);
+                    setResponse(respone)
                 }
-            })
-
-            const responeData = await respone.json()
-            // console.log(responeData)
-
-            if (responeData.statusCode === 404) {
-                setUserNotFound(true);
-                setTimeout(() => {
-                    setUserNotFound(false);
-                }, 3000);
-                resetForm();
-            } else {
-                setGetInput(true);
-                setResponse(responeData)
+            } catch (error) {
+                console.error("error to change password", error)
             }
-
-
 
         }
     }
@@ -84,24 +79,21 @@ const ForgetPasswordModal = (props) => {
                 password: values?.userConfirmPassword,
                 _id: response?.data.userId
             }
+            try {
 
-            const checkUserData = JSON.stringify(checkUser);
+                const respone = await postApiData(`${baseUrl}/api/v1/users/forgotpassword`, checkUser, {
+                    withCredentials: true
+                })
 
-            const respone = await fetch(`${baseUrl}/api/v1/users/forgotpassword`, {
-                method: "post",
-                body: checkUserData,
-                headers: {
-                    'content-Type': 'application/json'
+
+                if (respone.statuscode === 200) {
+                    changePassword();
+                    closeModal();
+                    setGetInput(null)
                 }
-            })
 
-            const responeData = await respone.json()
-            // console.log(responeData)
-
-            if (responeData.statuscode === 200) {
-                changePassword();
-                closeModal();
-                setGetInput(null)
+            } catch (error) {
+                console.error("error user not found", error)
             }
         }
     }

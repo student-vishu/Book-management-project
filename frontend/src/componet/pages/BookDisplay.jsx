@@ -4,67 +4,114 @@ import UserReadBook from '../commonComponet/UserReadBook';
 import "../../styles/pages_styles/BookDisplay.css"
 import useApiUrl from '../commonComponet/useApiUrl';
 import TopAuthorBook from '../commonComponet/TopAuthorBook';
+import { getApiData } from '../../config';
+import BookAndUserNo from '../commonComponet/BookAndUserNo';
 
 const BookDisplay = () => {
     const baseUrl = useApiUrl()
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    const bookId = params.get('Book') || "67ebd5eb3fcb62d93bdae64c";
+    const bookId = params.get('Book') || "67ed2d1171d782be4f2a885d";
 
     const [isOpen, setIsOpen] = useState(false);
     const [bookData, setBookData] = useState(null)
-    const [reviewData, setReviwData] = useState([])
+    const [reviewData, setReviwData] = useState([]);
+    const [userNoData, setUserNoData] = useState(0)
+    const [bookNoData, setBookNoData] = useState(0)
 
     useEffect(() => {
-        getBookData()
-        getBookReviw()
+        fetchBooks()
+        fetchBookReview(bookId)
+        fetchBookNo()
+        fetchUserNo()
     }, [])
 
 
-    const getBookData = async () => {
+    const fetchBooks = async () => {
+
         try {
-            const response = await fetch(`${baseUrl}/api/v1/books/getAllBooks`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include"
+            const res = await getApiData(`${baseUrl}/api/v1/books/getAllBooks`, {
+                withCredentials: true,
             });
 
-            if (!response.ok) {
-                console.error("API Error:", response.status, response.statusText);
-                return;
+            if (res && res?.statuscode === 200) {
+                setBookData(res?.data || []);
+            }
+            else {
+                console.error('Failed to fetch books');
             }
 
-            const Bookdata = await response.json();
-            setBookData(Bookdata?.data)
-
         } catch (error) {
-            console.error("Fetch Error:", error);
+            console.error('Fetch Error:', error);
         }
     };
-    const getBookReviw = async () => {
-        if (!bookId) {
+
+    const fetchBookReview = async (bookId) => {
+        if (bookId) {
+            try {
+                const res = await getApiData(`${baseUrl}/api/v1/review/${bookId}`)
+
+                // console.log(res)
+
+                if (res && res.statuscode === 200) {
+                    setReviwData(res.data.review || []);
+                } else {
+                    console.error('Failed to fetch books review');
+                }
+
+            } catch (error) {
+                console.error('Review Fetch Error:', error);
+            }
+        } else {
+
             console.error("❌ Error: bookId is missing in API call!");
-            return;
-        }
-
-        try {
-            const response = await fetch(`${baseUrl}/api/v1/review/${bookId}`);
-
-            if (!response.ok) {
-                throw new Error(`Error: ${response.statusText}`);
-            }
-
-            const responseData = await response.json();
-            setReviwData(responseData?.data?.review || []);
-
-            // console.log("Book Reviews:", responseData.data.review);
-            return responseData;
-        } catch (error) {
-            console.error("Error fetching book review:", error.message);
         }
     };
+
+    const fetchUserNo = async () => {
+        try {
+
+            const res = await getApiData(`${baseUrl}/api/v1/users/getUserCount`, {
+                withCredentials: true
+            })
+
+            if (res && res.statuscode === 200) {
+                if (res.data && res.data.userCount) {
+                    setUserNoData(res.data.userCount)
+                }
+            } else {
+                console.error("Falid user count")
+
+            }
+
+        } catch (error) {
+            console.error("Error user count", error)
+        }
+
+    }
+    const fetchBookNo = async () => {
+        try {
+
+            const res = await getApiData(` ${baseUrl}/api/v1/users/getBookCount`, {
+                withCredentials: true
+            })
+
+            if (res && res.statuscode === 200) {
+                if (res.data && res.data.bookCount) {
+                    setBookNoData(res.data.bookCount)
+                }
+            } else {
+                console.error("Falid user count")
+
+            }
+
+        } catch (error) {
+            console.error("Error user count", error)
+        }
+
+    }
+
+
 
     return (
         <>
@@ -74,6 +121,9 @@ const BookDisplay = () => {
                     View review
                 </button>
                 <CommentsModal isOpen={isOpen} setIsOpen={setIsOpen} reviewData={reviewData} />
+            </section>
+            <section className='our_value_section'>
+                <BookAndUserNo userNoData={userNoData} bookNoData={bookNoData} />
             </section>
             <section className='top-author-book'>
                 <TopAuthorBook bookData={bookData} />
@@ -103,7 +153,7 @@ const CommentsModal = (props) => {
             }));
             setComments(formatted);
         }
-        
+
     }, [reviewData]);
 
 

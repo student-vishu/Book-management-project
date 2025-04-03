@@ -61,7 +61,12 @@ const TopViewBook = (props) => {
                 <h1 className='heding'> Top Book Viewer </h1>
                 <div className="slider-container">
                     <Slider {...settings}>
-                        {bookData && bookData.length > 0 ? (
+
+                        {!bookData ? (
+                            // Show loader when bookData is null (indicating data is still loading)
+                            [...Array(4)].map((_, i) => <div className='lodar' key={i}></div>)
+                        ) : bookData.length > 0 ? (
+                            // Show book cards when data is available
                             bookData.filter((book) => book.rating >= 3.5).map((book, index) => {
                                 const percentage = (book.rating / 5) * 75;
                                 return (
@@ -78,18 +83,17 @@ const TopViewBook = (props) => {
                                                     <span className="rating-number">{book.rating.toFixed(1)}</span>
                                                 </div>
                                             </div>
-                                            <p className="book-author">author  {book.author}</p>
+                                            <p className="book-author">author {book.author}</p>
                                             <p className="book-price">₹{book.price}</p>
                                         </div>
                                     </div>
-                                )
-                            }
-                            )
+                                );
+                            })
                         ) : (
-                            [...Array(4)].map((_, i) => (
-                                <div className='lodar' key={i}></div>
-                            ))
+                            // Show message if bookData exists but is empty
+                            [...Array(4)].map((_, i) => <div className='lodar' key={i}><p>No books available</p></div>)
                         )}
+
                     </Slider>
                 </div>
             </div >

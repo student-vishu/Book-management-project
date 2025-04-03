@@ -1,0 +1,58 @@
+.website-info {
+    height: 350px;
+    width: 100%;
+    background: #333;
+}
+
+.website-info h1 {
+    text-align: center;
+    color: #fff;
+    padding: 20px 0px;
+    font-size: 32px;
+    margin-bottom: 30px;
+    font-weight: bold;
+    font-family: "Bree Serif", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.website-info .user-book-data {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.website-info .user-book-data .data {
+    background: #ffffff;
+    padding: 20px;
+    width: 150px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.1),
+        inset -5px -5px 10px rgba(255, 255, 255, 0.6);
+    border: 1px solid #ddd;
+    text-transform: capitalize;
+}
+
+.website-info .user-book-data .data .heding {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+    font-family: "Arvo", serif;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.website-info .user-book-data .data .no {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ff6600;
+    font-family: "Arvo", serif;
+    font-weight: 600;
+    font-style: normal;
+}

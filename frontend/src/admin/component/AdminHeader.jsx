@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router'
-import "../../../admin/styles/adminheader1.css"
-import useApiUrl from '../useApiUrl';
+import "../../admin/styles/adminheader1.css"
+import useApiUrl from '../../componet/commonComponet/useApiUrl';
 
 //chang
 const AdminHeader = () => {
@@ -53,7 +53,7 @@ const AdminHeader = () => {
                         <li><NavLink to={"/ManageBooks"} >ManageBooks</NavLink></li>
                         <li><NavLink to={"/Profile"} >Profile</NavLink></li>
                         <li><NavLink to={"/Book-Management"} >client</NavLink></li>
-                        <li><button onClick={userLogout} className="logout-btn">Logout</button></li>
+                        <li><button onClick={userLogout} className="Admin-logout-btn">Logout</button></li>
                         {/* <li><NavLink to={"/loogout"} >Logout</NavLink></li> */}
                     </ul>
                 </div>

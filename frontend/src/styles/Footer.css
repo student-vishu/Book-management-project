@@ -1,0 +1,44 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.footer .container {
+    background: linear-gradient(180deg, hsla(0, 0%, 100%, .1) .39%, hsla(0, 0%, 60%, .1) 100.39%), #0d1117;
+}
+
+.footer .container .inner_footer_section {
+    display: flex;
+    align-items: start;
+    justify-content: space-around;
+    padding: 50px 0px;
+}
+
+.footer .container .inner_footer_section .book_menu_container {
+    padding: 20px 0px;
+}
+
+.footer .container .inner_footer_section a {
+    display: block;
+    text-decoration: none;
+    color: #fff;
+    margin: 0px 0px 20px 0px;
+    width: fit-content;
+    margin: 0px auto 10px auto;
+}
+
+.footer .container .inner_footer_section .menu_container a:hover {
+    border-bottom: 2px solid #fff;
+}
+
+@media only screen and (max-width: 600px) {
+    .footer .container .inner_footer_section {
+        display: block;
+    }
+
+    .footer .container .inner_footer_section .logo_setion img {
+        width: 300px;
+        height: 60px;
+    }
+
+}

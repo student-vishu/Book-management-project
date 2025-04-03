@@ -4,6 +4,8 @@ import { ApiError } from "../utils/ApiError.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 import { Category } from "../models/category.model.js";
+import { Review } from "../models/review.model.js"
+import { Wishlist } from "../models/wishlist.model.js"
 
 
 const createBook = asyncHandler(async (req, res) => {
@@ -172,11 +174,18 @@ const updateBook = asyncHandler(async (req, res) => {
 const deleteBook = asyncHandler(async (req, res) => {
     const { id } = req.params
 
-    const deletedBook = await Book.findByIdAndDelete(id)
+    //const deletedBook = await Book.findByIdAndDelete(id)
+    const book = await Book.findById(id)
 
-    if (!deletedBook) {
-        throw new ApiError(404, "Book not found or already exist")
+    if (!book) {
+        throw new ApiError(404, "Book not found or already deleted")
     }
+
+    await Review.deleteMany({ book: id })
+
+    await Wishlist.deleteMany({ book: id })
+
+    await Book.findByIdAndDelete(id)
 
     res.status(200)
         .json(new ApiResponse(200, {}, "Book deleted successfully"))
