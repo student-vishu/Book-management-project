@@ -22,7 +22,7 @@ const Home = () => {
     useEffect(() => {
         fetchBooks()
         const user = JSON.parse(localStorage?.getItem("userLogin")) || JSON.parse(localStorage?.getItem("userAdminLogin")) || null;
-        setUserData(user._id)
+        if (user) setUserData(user._id)
     }, [!modalOpen])
 
     useEffect(() => {

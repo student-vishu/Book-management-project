@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route, Routes } from "react-router";
+import { HashRouter, Route, Routes } from "react-router";
 import Home from '../../pages/Home.jsx';
 import Login from '../../pages/Login.jsx'
 import "../../../styles/Layout.css";
@@ -20,7 +20,7 @@ import UpdateBook from '../../pages/UpdateBook.jsx';
 const Layout = () => {
     return (
         <div className='body'>
-            <BrowserRouter>
+            <HashRouter>
                 <Routes>
                     {/* user */}
                     <Route path='/*' element={<Protected Componet={Home} />} />
@@ -42,7 +42,7 @@ const Layout = () => {
 
                 </Routes>
           
-            </BrowserRouter>
+            </HashRouter>
         </div>
     )
 }
